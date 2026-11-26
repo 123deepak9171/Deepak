@@ -126,7 +126,8 @@ Cloud session ki files seedhe phone pe download nahi hoti. Isliye ye supported r
 
 - **GitHub Pages (recommended)**: Repo **Settings → Pages → Source: Deploy from a branch → Branch: (main branch) / `docs`** → Save. 1–2 min baad link milega: `https://123deepak9171.github.io/Deepak/`. Phone ke home screen pe "Add to Home screen" kar lo.
 - Dashboard aapki settings phone ke browser me yaad rakhta hai. Koi password/token nahi maangta.
-- Dashboard me **Branch** field me wahi branch likho jisme `.github/workflows/render.yml` hai.
+- Dashboard me **Branch** field me wahi branch likho jisme `.github/workflows/render.yml` hai. Abhi saara code branch `claude/desi-mining-wala-video-studio-i9ejot` me hai (dashboard ka default yahi hai). Repo ka current default branch `ccr-195401f0-23ht7i` hai — is code ko apne main branch me merge karke dashboard me us branch ka naam daal do.
+- Turant use ke liye Claude ne dashboard ka ek private link bhi banaya hai (sirf aapke account me khulta hai; wahan "↻ Media list" sandbox ki wajah se kaam nahi karta, path manually likho).
 
 ---
 
@@ -172,7 +173,7 @@ Dashboard ye file khud banata hai. Haath se likhni ho to `templates/jobs/` copy 
 - Engine: **Faster-Whisper** (MIT license), CPU pe free chalta hai. Language `hi`, aur Haryanvi ke liye ek special prompt (`studio.config.json → transcription.haryanvi_prompt`) jo Haryanvi shabd (thaara, mhara, ghana, sai…) pehchanne me madad karta hai.
 - Model: default `small`. Better Hindi accuracy ke liye `medium` (dheema). `DMW_WHISPER_MODEL=medium` ya config me badlo.
 - Fallback order (`source: "auto"`): Whisper → `srt` file → `script` .txt (script ke shabd boli hui jagah par auto-time hote hain) → captions skip.
-- Output aksar **Devanagari** me aata hai. Hinglish (Roman) captions chahiye to apna script/SRT do.
+- Haryanvi prompt Roman (Hinglish) me hai, isliye test me output bhi Roman Hinglish aaya ("Ram Ram bhai…"). Devanagari chahiye to config me `haryanvi_prompt` Devanagari me likh do, ya `dialect` hata do.
 - Manual transcription: `python pipeline/studio.py transcribe video.mp4 --language hi --dialect haryanvi` → `.srt`.
 
 ---
@@ -219,6 +220,8 @@ node pipeline/tools/verify_playback.cjs output/x/x.mp4     # browser playback te
 | Chromium browser playback | ✅ play hua, duration 20.77 s, 1080x1920 |
 | Devanagari caption shaping (राम राम भाई) | ✅ sahi render |
 | Unit tests | ✅ 7/7 |
+| **GitHub Actions render** (`jobs/demo-9x16.json`) | ✅ success ~1.5 min render; Artifact `rendered-videos-2` + Release [`render-demo-9x16-2`](https://github.com/123deepak9171/Deepak/releases/tag/render-demo-9x16-2) (direct MP4, 7.6 MB) |
+| **Whisper self-test** (Actions, `small` model, Hindi TTS voice) | ✅ chala — output: "Ram Ram bhai, aaj tam khadaan … masin … bahut … hai". Robotic espeak voice ki wajah se accuracy kam; asli aawaaz + `medium` model se behtar |
 
 Demo video: [`samples/demo-9x16.mp4`](samples/demo-9x16.mp4) (synthetic test pattern + tones, koi private media nahi).
 
