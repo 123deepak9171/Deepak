@@ -12,6 +12,7 @@ on:
     paths:
       - ".github/workflows/whisper-test.yml"
       - "pipeline/dmw/captions.py"
+      - "pipeline/requirements.txt"
 
 permissions:
   contents: read

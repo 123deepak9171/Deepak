@@ -79,6 +79,8 @@ def demo_job(a: dict, aspect: str = "9:16") -> dict:
         ],
         "captions": {"enabled": True, "source": "script", "script": a["script"], "language": "hi"},
         "music": {"enabled": True, "src": a["music"]},
+        # Demo is synthetic (no private media) -> safe to publish as a Release for a direct MP4 link
+        "export": {"publish_release": True},
     }
 
 

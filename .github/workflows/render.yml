@@ -46,7 +46,7 @@ jobs:
           elif [ -n "$BEFORE" ] && ! echo "$BEFORE" | grep -qE '^0+$' && git cat-file -e "$BEFORE" 2>/dev/null; then
             files=$(git diff --name-only --diff-filter=AM "$BEFORE" "$GITHUB_SHA" -- 'jobs/*.json')
           else
-            files=$(git diff-tree --no-commit-id --name-only -r --diff-filter=AM "$GITHUB_SHA" -- 'jobs/*.json')
+            files=$(git diff-tree --root --no-commit-id --name-only -r --diff-filter=AM "$GITHUB_SHA" -- 'jobs/*.json')
           fi
           files=$(echo "$files" | grep -E '^jobs/[A-Za-z0-9._-]+\.json$' || true)
           echo "Jobs: $files"

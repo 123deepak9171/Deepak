@@ -51,5 +51,8 @@
   "music": {
     "enabled": true,
     "src": "assets/demo/demo_music.mp3"
+  },
+  "export": {
+    "publish_release": true
   }
 }

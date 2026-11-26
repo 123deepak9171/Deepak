@@ -15,7 +15,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif}
 header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:10px}
-.logo{width:38px;height:38px;border-radius:50%;border:3px solid var(--gold);display:grid;place-items:center;font-weight:800;color:var(--gold);font-size:12px}
+.logo{width:42px;height:42px;flex:none;border-radius:50%;border:3px solid var(--gold);display:grid;place-items:center;font-weight:800;color:var(--gold);font-size:11px;letter-spacing:-.02em}
 header h1{font-size:17px;margin:0;line-height:1.1}
 header small{color:var(--muted);font-size:12px}
 main{max-width:760px;margin:0 auto;padding:12px 16px 120px}
@@ -27,11 +27,11 @@ input,select,textarea{width:100%;background:var(--panel2);color:var(--text);bord
 textarea{min-height:110px;resize:vertical}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer}
+.chip{text-decoration:none;display:inline-block;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold);font-weight:700}
-button.btn{width:100%;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;background:var(--gold);color:#111;margin-top:10px}
-button.sec{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
-button.sm{width:auto;padding:8px 12px;font-size:13px;margin:0}
+.btn{width:100%;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;background:var(--gold);color:#111;margin-top:10px}
+.sec{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.sm{width:auto;padding:8px 12px;font-size:13px;margin:0}
 .item{display:flex;gap:8px;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14px}
 .item .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .item .k{font-size:11px;background:var(--saffron);color:#111;border-radius:6px;padding:2px 6px;font-weight:800}
@@ -65,14 +65,15 @@ details summary{cursor:pointer;color:var(--gold);font-weight:700;font-size:14px}
     <h2><span class="n">0</span>Repository</h2>
     <div class="row">
       <div><label for="repo">GitHub repo (owner/name)</label><input id="repo" value="123deepak9171/Deepak"></div>
-      <div><label for="branch">Branch</label><input id="branch" value="master"></div>
+      <div><label for="branch">Branch</label><input id="branch" value="claude/desi-mining-wala-video-studio-i9ejot"></div>
     </div>
     <div class="chips" style="margin-top:10px">
-      <button class="chip" onclick="openUpload('raw-videos')">⬆ Video upload</button>
-      <button class="chip" onclick="openUpload('photos')">⬆ Photo</button>
-      <button class="chip" onclick="openUpload('logos')">⬆ Logo</button>
-      <button class="chip" onclick="openUpload('music')">⬆ Music</button>
-      <button class="chip" onclick="openUpload('scripts')">⬆ Script</button>
+      <a class="chip" data-up="raw-videos" target="_blank" rel="noopener">⬆ Video upload</a>
+      <a class="chip" data-up="photos" target="_blank" rel="noopener">⬆ Photo</a>
+      <a class="chip" data-up="logos" target="_blank" rel="noopener">⬆ Logo</a>
+      <a class="chip" data-up="music" target="_blank" rel="noopener">⬆ Music</a>
+      <a class="chip" data-up="scripts" target="_blank" rel="noopener">⬆ Script</a>
+      <a class="chip" data-gh="releases/new" target="_blank" rel="noopener">⬆ Badi video (Release)</a>
       <button class="chip" onclick="loadAssets()">↻ Media list</button>
     </div>
     <div class="note warn" id="pubNote">Repo agar <b>public</b> hai to upload ki gayi media sabko dikhegi. Private media se pehle repo ko Private karein (README dekhein). 25 MB se badi video: GitHub Release me attach karke uska link "URL se add" me daalein.</div>
@@ -91,7 +92,10 @@ details summary{cursor:pointer;color:var(--gold);font-weight:700;font-size:14px}
       <button class="btn sec sm" style="height:46px" onclick="addUrl()">+ Add</button>
     </div>
     <div id="timeline"></div>
-    <button class="btn sec sm" style="margin-top:8px" onclick="addTitle()">+ Title card</button>
+    <label for="titleText">Title card text</label>
+    <div class="row"><input id="titleText" placeholder="Aaj Ka Topic"><button class="btn sec sm" style="height:46px" onclick="addTitle()">+ Title card</button></div>
+    <label for="gsBg">Green screen background (🟩 button dabane par ye lagega)</label>
+    <input id="gsBg" value="assets/photos/background.jpg">
     <p class="muted" id="tlEmpty">Timeline khali hai. Video ya photo add karo — order wahi rahega jo yahan dikhega.</p>
   </section>
 
@@ -139,6 +143,7 @@ details summary{cursor:pointer;color:var(--gold);font-weight:700;font-size:14px}
     <div id="planNotes" class="muted"></div>
     <div class="bar" id="planBar"></div>
     <ol id="planSteps"></ol>
+    <a id="goGit" class="btn" style="display:block;text-align:center;text-decoration:none" target="_blank" rel="noopener" hidden>✅ GitHub par kholo → “Commit changes” dabao</a>
     <details><summary>Job JSON dekho</summary><pre id="jsonOut"></pre></details>
   </section>
 
@@ -146,8 +151,8 @@ details summary{cursor:pointer;color:var(--gold);font-weight:700;font-size:14px}
     <h2><span class="n">6</span>Render & download</h2>
     <p class="muted">“Render request” dabane par GitHub par job file khulegi → <b>Commit changes</b> dabao → GitHub Actions video render karega (free, cloud me) → MP4 Actions run ke <b>Artifacts</b> (ya Release) me milega.</p>
     <div class="chips">
-      <button class="chip" onclick="openLink('actions')">▶ Render status (Actions)</button>
-      <button class="chip" onclick="openLink('releases')">⬇ Releases (MP4)</button>
+      <a class="chip" data-gh="actions" target="_blank" rel="noopener">▶ Render status (Actions)</a>
+      <a class="chip" data-gh="releases" target="_blank" rel="noopener">⬇ Releases (MP4)</a>
       <button class="chip" onclick="copyText(claudePrompt(),'Claude prompt copy hua')">🤖 Claude Code prompt copy</button>
       <button class="chip" onclick="copyText(JSON.stringify(buildJob(),null,2),'JSON copy hua')">{ } JSON copy</button>
     </div>
@@ -184,9 +189,11 @@ function chips(el, opts, key){
 }
 function toast(m){const t=$("toast"); t.textContent=m; t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),1800)}
 function repo(){return $("repo").value.trim().replace(/^https:\/\/github.com\//,"").replace(/\/$/,"")}
-function br(){return $("branch").value.trim()||"master"}
-function openUpload(folder){window.open(`https://github.com/${repo()}/upload/${br()}/assets/${folder}`,"_blank")}
-function openLink(k){window.open(`https://github.com/${repo()}/${k}`,"_blank")}
+function br(){return $("branch").value.trim()||"claude/desi-mining-wala-video-studio-i9ejot"}
+function links(){
+  document.querySelectorAll("[data-up]").forEach(a=>a.href=`https://github.com/${repo()}/upload/${br()}/assets/${a.dataset.up}`);
+  document.querySelectorAll("[data-gh]").forEach(a=>a.href=`https://github.com/${repo()}/${a.dataset.gh}`);
+}
 
 async function loadAssets(){
   const folders=["raw-videos","photos","logos","music","sfx","scripts"]; const all=[];
@@ -216,7 +223,7 @@ function addSrc(src){
 }
 function addPicked(){addSrc($("assetPick").value)}
 function addUrl(){addSrc($("urlAdd").value.trim()); $("urlAdd").value=""}
-function addTitle(){const t=prompt("Title card ka text?","Aaj Ka Topic"); if(t){state.timeline.push({type:"title",title:t,subtitle:"",duration:2.5}); drawTimeline(); save();}}
+function addTitle(){const t=$("titleText").value.trim()||"Aaj Ka Topic"; state.timeline.push({type:"title",title:t,subtitle:"",duration:2.5}); $("titleText").value=""; drawTimeline(); save();}
 function move(i,d){const t=state.timeline,j=i+d; if(j<0||j>=t.length) return; [t[i],t[j]]=[t[j],t[i]]; drawTimeline(); save()}
 function del(i){state.timeline.splice(i,1); drawTimeline(); save()}
 function drawTimeline(){
@@ -227,7 +234,7 @@ function drawTimeline(){
     d.innerHTML=`<span class="k">${it.type==="video"?"VID":it.type==="image"?"IMG":"TXT"}</span><span class="t"></span>`;
     d.querySelector(".t").textContent=label;
     if(it.type==="video"){const g=document.createElement("button"); g.title="Green screen"; g.textContent=it.greenscreen?"🟩":"▫"; g.onclick=()=>{
-      if(it.greenscreen){delete it.greenscreen}else{const bg=prompt("Green screen background (photo/video path):","assets/photos/background.jpg"); if(!bg) return; it.greenscreen={background:bg}}
+      if(it.greenscreen){delete it.greenscreen}else{const bg=$("gsBg").value.trim(); if(!bg) return toast("Pehle green screen background path likho"); it.greenscreen={background:bg}; toast("Green screen ON")}
       drawTimeline(); save()}; d.appendChild(g)}
     for(const [t,f] of [["↑",()=>move(i,-1)],["↓",()=>move(i,1)],["✕",()=>del(i)]]){const b=document.createElement("button"); b.textContent=t; b.onclick=f; d.appendChild(b)}
     el.appendChild(d);
@@ -264,7 +271,7 @@ function buildJob(){
 function plan(job){
   const t=(job.instructions||"").toLowerCase(), notes=[]; let aspect=job.aspect, style=job.style;
   if(KW.v916.test(t)&&aspect!=="9:16") notes.push("Instruction me reel/shorts likha hai — 9:16 better rahega");
-  if(KW.v169.test(t)&&aspect!=="16:9") notes.push("Instruction me YouTube/horizontal likha hai — 16:9 better rahega");
+  if(KW.v169.test(t)&&!KW.v916.test(t)&&aspect!=="16:9") notes.push("Instruction me YouTube/horizontal likha hai — 16:9 better rahega");
   for(const s of ["cinematic","energetic","minimal","documentary"]) if(KW[s].test(t)&&style!==s){notes.push(`Instruction se '${s}' style match karta hai`);break}
   if(KW.product.test(t)&&!job.product_reveal) notes.push("Product ka zikr hai — renderer product reveal scene add karega");
   const sc=STYLE_CFG[style], steps=[], parts=[];
@@ -304,8 +311,8 @@ function requestRender(){
   const job=preview();
   if(!job.timeline.length) return toast("Pehle media add karo");
   const url=`https://github.com/${repo()}/new/${br()}?filename=${encodeURIComponent("jobs/"+job.id+".json")}&value=${encodeURIComponent(JSON.stringify(job,null,2))}`;
-  window.open(url,"_blank");
-  toast("GitHub khula — 'Commit changes' dabao");
+  const a=$("goGit"); a.href=url; a.hidden=false; a.scrollIntoView({behavior:"smooth",block:"center"});
+  toast("Job ready — green button dabao");
 }
 function claudePrompt(){
   return `DMW studio me ye job render karo. Job JSON jobs/ folder me save karo, "python pipeline/studio.py plan" se plan dikhao, phir render karo aur MP4 mujhe bhejo:\n\n${JSON.stringify(buildJob(),null,2)}`;
@@ -324,6 +331,7 @@ $("durV").textContent=$("dur").value; $("productBox").hidden=!$("product").check
 $("dur").oninput=()=>{$("durV").textContent=$("dur").value; save()};
 $("product").onchange=()=>{$("productBox").hidden=!$("product").checked; save()};
 document.querySelectorAll("input,textarea").forEach(e=>e.addEventListener("change",save));
+["repo","branch"].forEach(id=>$(id).addEventListener("input",links)); links();
 </script>
 </body>
 </html>
