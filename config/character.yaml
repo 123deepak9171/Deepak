@@ -1,0 +1,57 @@
+# ==============================================================
+#  DESI MINING WALA — Character Bible (कैरेक्टर की पूरी पहचान)
+#  analyze.py आपकी असली वीडियो देखकर learned_style.json बनाता है।
+#  बाकी चीज़ें आप खुद बदल सकते हैं — नाम, रंग, तकिया-कलाम।
+# ==============================================================
+
+brand:
+  handle: "@desi.mining.wala"
+  name: "Desi Mining Wala"
+  product: "Bitcoin mining machines (ASIC miners) — sale, setup और support"
+  contact_line: "DM करो @desi.mining.wala पर"
+  # ASCI (India) crypto-ad गाइडलाइन के हिसाब से हर पोस्ट/एंड-कार्ड पर यह लाइन
+  disclaimer: "Crypto unregulated है और जोखिम भरा हो सकता है। मुनाफ़े की कोई गारंटी नहीं। सोच-समझकर निवेश करें।"
+
+characters:
+  wala:
+    display_name: "मिनिंग वाले भैया"
+    role: "हीरो — देसी, होशियार, मज़ाकिया दुकानदार जो सबको माइनिंग मशीन समझाता है"
+    voice: "hi-IN-MadhurNeural"
+    voice_pitch: "+0Hz"
+    voice_rate: "+8%"
+    # कार्टून के रंग
+    turban: "#F57C00"
+    kurta: "#1565C0"
+    skin: "#C68642"
+    catchphrases:
+      - "अरे भाई साहब!"
+      - "मशीन चलेगी, तो किस्मत भी चलेगी!"
+      - "देसी जुगाड़, डिजिटल सोना!"
+  pappu:
+    display_name: "पप्पू"
+    role: "भोला ग्राहक — हर बात उल्टी समझता है, कॉमेडी उसी से आती है"
+    voice: "hi-IN-MadhurNeural"
+    voice_pitch: "+18Hz"
+    voice_rate: "+14%"
+    cap: "#2E7D32"
+    shirt: "#FBC02D"
+    skin: "#E0AC69"
+  bijli:
+    display_name: "बिजली विभाग वाले अंकल"
+    role: "कभी-कभी आने वाला 'विलेन' — बिजली बिल लेकर"
+    voice: "hi-IN-SwaraNeural"
+    voice_pitch: "-10Hz"
+    voice_rate: "+0%"
+
+style:
+  language: "हिंदी (देसी बोलचाल, थोड़ा Hinglish चलेगा)"
+  length_seconds: [25, 45]
+  tone: "फैमिली-फ्रेंडली देसी कॉमेडी, कोई गाली या किसी का मज़ाक उड़ाना नहीं"
+  hook_rule: "पहली 2 सेकंड में ज़ोरदार हुक — सवाल, झटका या उल्टी बात"
+  ending_rule: "हर वीडियो का आखिरी पंच → बिटकॉइन माइनिंग मशीन ख़रीदनी है तो Desi Mining Wala से"
+  never_say:
+    - "पैसा डबल"
+    - "गारंटीड प्रॉफिट"
+    - "रिस्क फ्री"
+  # analyze.py आपकी वीडियो से सीखी बातें config/learned_style.json में रखता है (अपने-आप यहाँ जुड़ जाती हैं)
+  learned_from_my_videos: {}

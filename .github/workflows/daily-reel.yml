@@ -1,0 +1,64 @@
+name: रोज़ की कॉमेडी रील (Desi Mining Wala)
+
+on:
+  schedule:
+    - cron: "17 3 * * *"   # रोज़ सुबह ~8:47 बजे (IST)
+  workflow_dispatch: {}     # Actions टैब से "Run workflow" दबाकर कभी भी
+
+permissions:
+  contents: write
+
+jobs:
+  reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Tools install (फ्री)
+        run: |
+          sudo apt-get update -y && sudo apt-get install -y ffmpeg espeak-ng
+          pip install -r requirements.txt
+
+      - name: आज की रील बनाओ
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python run_daily.py
+          echo "DAY=$(date +%F)" >> "$GITHUB_ENV"
+
+      - name: वीडियो डाउनलोड के लिए सेव करो
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ env.DAY }}
+          path: output/${{ env.DAY }}/
+          retention-days: 30
+
+      - name: Public लिंक बनाओ (Instagram ऑटो-पोस्ट के लिए)
+        if: ${{ env.IG_ON == 'yes' }}
+        env:
+          IG_ON: ${{ secrets.IG_ACCESS_TOKEN != '' && 'yes' || 'no' }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "reel-${DAY}" "output/${DAY}/reel.mp4" --title "Reel ${DAY}" --notes-file "output/${DAY}/caption.txt"
+          echo "PUBLIC_VIDEO_URL=https://github.com/${{ github.repository }}/releases/download/reel-${DAY}/reel.mp4" >> "$GITHUB_ENV"
+
+      - name: Telegram / Instagram पर भेजो
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: python -m agent.poster "output/${DAY}"
+
+      - name: हिस्ट्री सेव करो (ताकि जोक रिपीट न हों)
+        run: |
+          git config user.name "reel-bot"
+          git config user.email "reel-bot@users.noreply.github.com"
+          git add output/history.json
+          git commit -m "reel ${DAY}" || exit 0
+          git push

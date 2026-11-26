@@ -1,0 +1,97 @@
+{
+  "title": "रिश्ते वाली आंटी",
+  "lines": [
+    {
+      "speaker": "pappu",
+      "emotion": "sad",
+      "text": "भैया, लड़की वालों ने पूछा लड़का क्या करता है।"
+    },
+    {
+      "speaker": "wala",
+      "emotion": "normal",
+      "text": "तो तूने क्या बोला?"
+    },
+    {
+      "speaker": "pappu",
+      "emotion": "happy",
+      "text": "मैंने बोला, लड़का रात भर जागकर माइनिंग करता है!"
+    },
+    {
+      "speaker": "wala",
+      "emotion": "shocked",
+      "text": "फिर?"
+    },
+    {
+      "speaker": "pappu",
+      "emotion": "sad",
+      "text": "वो बोले, खदान में काम करता है? रिश्ता कैंसिल!"
+    },
+    {
+      "speaker": "wala",
+      "emotion": "happy",
+      "text": "अगली बार बोलना, लड़के की मशीन रात भर जागती है, लड़का आराम से सोता है!"
+    },
+    {
+      "speaker": "wala",
+      "emotion": "happy",
+      "text": "मशीन लेनी है तो देसी माइनिंग वाला! प्रोफ़ाइल पे जाओ, DM करो!"
+    }
+  ],
+  "source": "offline-bank",
+  "caption": "रिश्ते वाली आंटी 😂\n\nभैया, लड़की वालों ने पूछा लड़का क्या करता है।\n\nबिटकॉइन माइनिंग मशीन के लिए DM करें 👉 @desi.mining.wala\n\n⚠️ Crypto unregulated है और जोखिम भरा हो सकता है। मुनाफ़े की कोई गारंटी नहीं। सोच-समझकर निवेश करें।\n\n#bitcoin #bitcoinmining #cryptoindia #desicomedy #comedyreels #asicminer #mining #hindicomedy #reelsindia #desiminingwala",
+  "duration": 29.8,
+  "tts": [
+    "espeak-ng"
+  ],
+  "timeline": [
+    {
+      "speaker": "pappu",
+      "emotion": "sad",
+      "text": "भैया, लड़की वालों ने पूछा लड़का क्या करता है।",
+      "start": 0.35,
+      "end": 4.080666666666667
+    },
+    {
+      "speaker": "wala",
+      "emotion": "normal",
+      "text": "तो तूने क्या बोला?",
+      "start": 4.360666666666666,
+      "end": 6.109166666666666
+    },
+    {
+      "speaker": "pappu",
+      "emotion": "happy",
+      "text": "मैंने बोला, लड़का रात भर जागकर माइनिंग करता है!",
+      "start": 6.389166666666666,
+      "end": 10.13675
+    },
+    {
+      "speaker": "wala",
+      "emotion": "shocked",
+      "text": "फिर?",
+      "start": 10.41675,
+      "end": 10.97775
+    },
+    {
+      "speaker": "pappu",
+      "emotion": "sad",
+      "text": "वो बोले, खदान में काम करता है? रिश्ता कैंसिल!",
+      "start": 11.25775,
+      "end": 15.202416666666666
+    },
+    {
+      "speaker": "wala",
+      "emotion": "happy",
+      "text": "अगली बार बोलना, लड़के की मशीन रात भर जागती है, लड़का आराम से सोता है!",
+      "start": 15.482416666666666,
+      "end": 21.04820833333333
+    },
+    {
+      "speaker": "wala",
+      "emotion": "happy",
+      "text": "मशीन लेनी है तो देसी माइनिंग वाला! प्रोफ़ाइल पे जाओ, DM करो!",
+      "start": 21.328208333333333,
+      "end": 26.509416666666667
+    }
+  ]
+}

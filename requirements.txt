@@ -1,0 +1,7 @@
+edge-tts>=7.0
+Pillow>=10.0
+numpy>=1.26
+PyYAML>=6.0
+requests>=2.31
+# सिर्फ़ पुरानी वीडियो एनालाइज़ करने के लिए (python -m agent.analyze):
+# faster-whisper>=1.0

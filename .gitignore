@@ -1,0 +1,6 @@
+__pycache__/
+output/*/_work/
+my_videos/
+analysis/frames/
+*.mp4
+!output/sample/*.mp4
