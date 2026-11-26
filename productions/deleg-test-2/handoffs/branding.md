@@ -1,0 +1,21 @@
+# Handoff: branding → master-director
+- Production: deleg-test-2
+- Status: DONE
+- Files created (must exist):
+  - productions/deleg-test-2/11-brand-check.md
+  - productions/deleg-test-2/handoffs/branding.md
+- Commands run (exit code):
+  - Read of PROTOCOL.md, BRAND_RULES.md, 00-brief.md, 01-script.md, 02-hooks.md, images/thumbnail.png, handoffs/image-generation.md (ok)
+  - `cat script.txt`, `ls` of assets, PIL image size check of thumbnail.png (1920x1080), dmw_logo.png (600x600) → 0
+  - No ffmpeg frame extraction (no render exists; not requested). No render run.
+- Issues / unsupported parts + fallback used:
+  - Verdicts: script APPROVED WITH NOTES; hooks APPROVED WITH NOTES; thumbnail FIXES NEEDED.
+  - Thumbnail uses the demo fractal placeholder (neon pink/purple/green + "PRODUCT" text): not a crusher, off-brand colours. Do not publish.
+  - Launch words (NAYA / NEW / aa gaya / aa raha hai) need owner confirmation of launch status.
+  - "Price jaldi announce hoga", "specs jaldi bataenge", "mazboot build" are unconfirmed statements.
+  - assets/logos/logo.png does not exist; demo logo assets/demo/dmw_logo.png used (not stretched/recoloured in thumbnail).
+- Requests for other agents (owner: change):
+  - script-writer: confirm/neutralise launch wording; mark or reword "Price jaldi announce hoga" and "specs jaldi bataenge"; remove or flag "mazboot build" in script.txt; strip on-screen [CONFIRM] tags before render.
+  - viral-hook: add [CONFIRM] to Hook 1 and thumbnail option 1 (launch wording); note placeholder photo and need for permitted PPE footage in hook 2.
+  - image-generation: re-make thumbnail with the real X1 photo in earthy-mining grade, remove "PRODUCT" placeholder and neon fractal; reconsider duplicate NAYA + NEW pending owner confirmation.
+- Next suggested agent: master-director (ask owner the [CONFIRM] questions and for the real X1 photo), then image-generation and script-writer re-runs.

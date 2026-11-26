@@ -1,0 +1,15 @@
+# Handoff: viral-hook → master-director
+- Production: deleg-test-2
+- Status: DONE
+- Files created (must exist):
+  - productions/deleg-test-2/02-hooks.md
+  - productions/deleg-test-2/handoffs/viral-hook.md
+- Commands run (exit code):
+  - None (only file reads and writes; web search not used as instructed)
+- Issues / unsupported parts + fallback used:
+  - No price or specs provided, so none used. Hook 5 and thumbnail option 3 imply launch timing: [CONFIRM] launch/availability.
+- Requests for other agents (owner: change):
+  - image-generation: use `RECOMMENDED_THUMBNAIL_TEXT: NAYA CRUSHER X1` and `RECOMMENDED_THUMBNAIL_SUBTEXT: DESI MINING WALA` from 02-hooks.md. No price or spec text on the thumbnail.
+  - script-writer: the recommended hook (#1) can open the script. Spoken line: "Ram Ram bhai, crusher ki duniya mein kuch naya aa raha hai."
+  - branding: check that the "NAYA"/"aa gaya" wording matches the real launch status.
+- Next suggested agent: image-generation (thumbnail), then branding

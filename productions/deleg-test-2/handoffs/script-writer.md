@@ -1,0 +1,16 @@
+# Handoff: script-writer → master-director
+- Production: deleg-test-2
+- Status: DONE
+- Files created (must exist):
+  - productions/deleg-test-2/01-script.md
+  - productions/deleg-test-2/script.txt
+  - productions/deleg-test-2/handoffs/script-writer.md
+- Commands run (exit code):
+  - None (only file reads and writes)
+- Issues / unsupported parts + fallback used:
+  - No facts were given. Price, specs, launch date and offers appear only as [CONFIRM] or as "jaldi bataenge / announce hoga". The "mazboot build" claim is flagged [CONFIRM]. The full list is in 01-script.md.
+  - The product photo was not opened. Visual notes are generic.
+- Requests for other agents (owner: change):
+  - viral-hook: the line 1 hook may be replaced if it fits in 3 s (about 7 words).
+  - branding: check the [CONFIRM] on-screen tags are removed or approved before any render.
+- Next suggested agent: branding (claims check), after viral-hook and image-generation

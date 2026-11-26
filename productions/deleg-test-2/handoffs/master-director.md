@@ -1,0 +1,22 @@
+# Handoff: master-director → owner
+- Production: deleg-test-2
+- Status: PARTIAL (all 4 agents DONE; thumbnail needs a real product photo before publishing; launch/price wording pending owner confirmation)
+- Files created (must exist):
+  - productions/deleg-test-2/00-brief.md
+  - productions/deleg-test-2/delegation-plan.json
+  - productions/deleg-test-2/01-script.md, script.txt (script-writer)
+  - productions/deleg-test-2/02-hooks.md (viral-hook)
+  - productions/deleg-test-2/images/thumbnail.png 1920x1080 (image-generation)
+  - productions/deleg-test-2/11-brand-check.md (branding)
+  - productions/deleg-test-2/handoffs/{script-writer,viral-hook,image-generation,branding,master-director}.md
+- Commands run (exit code):
+  - image-generation: `.venv/bin/python pipeline/studio.py still Thumbnail --props ... --out productions/deleg-test-2/images/thumbnail.png` → 0; ffmpeg logo-backing pass → 0 (Pillow not installed → ffmpeg used)
+- Agents used (4/30): script-writer ‖ viral-hook → image-generation → branding (ROUTING rows "Script / hooks only" + "Thumbnail only")
+- Not run (by request): render, QC, export, marketing.
+- Issues / unsupported parts + fallback used:
+  - assets/demo/product_photo.jpg is a demo placeholder (fractal + "PRODUCT" text), not a crusher → thumbnail NOT publishable until real X1 photo is given.
+  - Branding: script/hooks APPROVED WITH NOTES; thumbnail FIXES NEEDED (placeholder bg, neon colours).
+  - Launch status unconfirmed: "Naya / NEW / aa gaya" wording needs owner OK; "mazboot build" claim unconfirmed; price/specs = [CONFIRM].
+  - assets/logos/logo.png missing; assets/demo/dmw_logo.png used — owner to confirm official logo.
+  - No external AI / paid services used.
+- Next suggested agent: after owner answers → script-writer + viral-hook (wording fixes, parallel) and image-generation (re-render with real photo) → branding re-check.

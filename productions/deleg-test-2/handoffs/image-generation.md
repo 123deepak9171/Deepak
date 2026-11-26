@@ -1,0 +1,15 @@
+# Handoff: image-generation → master-director
+- Production: deleg-test-2
+- Status: DONE
+- Files created (must exist):
+  - productions/deleg-test-2/images/thumbnail.png (1920x1080, RGB PNG)
+- Commands run (exit code):
+  - `.venv/bin/python pipeline/studio.py still Thumbnail --props '{"width":1920,"height":1080,"fps":30,"durationSec":0.0333,"headline":"NAYA CRUSHER X1","subline":"DESI MINING WALA","image":"job/deleg-test-2/product_photo.jpg","logo":"job/deleg-test-2/dmw_logo.png","badge":"NEW"}' --out productions/deleg-test-2/images/thumbnail.png` → 0
+  - ffmpeg post-step (dark disc behind logo, logo re-overlaid at same size/position, 173x173 from 600x600 square, no stretch/recolour) → 0
+  - assets were copied to remotion/public/job/deleg-test-2/ for the render and removed afterwards
+- Issues / unsupported parts + fallback used:
+  - The Remotion render placed the gold DMW logo directly on the bright pink product area, so the "DMW" letters were hard to read. Fixed with the ffmpeg dark-disc backing; logo itself unchanged.
+  - The demo product_photo.jpg is a placeholder (fractal image with "PRODUCT" text), not a real crusher. Replace with the real X1 photo and re-run the same command when available.
+  - Text: NAYA CRUSHER X1 / DESI MINING WALA plus a saffron "NEW" badge. No price, specs or "No.1" claims. Visually checked by opening the PNG: text and logo readable.
+- Requests for other agents (owner: change): none. The "NEW" badge is a launch label; branding may confirm launch timing [CONFIRM].
+- Next suggested agent: branding

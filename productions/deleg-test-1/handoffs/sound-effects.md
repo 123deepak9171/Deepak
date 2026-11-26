@@ -1,0 +1,20 @@
+# Handoff: sound-effects → master-director
+- Production: deleg-test-1
+- Status: DONE
+- Files created (must exist):
+  - productions/deleg-test-1/audio/sfx_boom.wav (1.8 s, 48 kHz stereo PCM)
+  - productions/deleg-test-1/audio/sfx_ding.wav (1.2 s, 48 kHz stereo PCM)
+  - productions/deleg-test-1/audio/sfx-cues.json (cue list: boom at 2.5 s vol 0.7, ding at 6.0 s vol 0.6)
+  - productions/deleg-test-1/handoffs/sound-effects.md (this file)
+- Commands run (exit code):
+  - `.venv/bin/python pipeline/studio.py sfx boom --out productions/deleg-test-1/audio/sfx_boom.wav` → 0
+  - `.venv/bin/python pipeline/studio.py sfx ding --out productions/deleg-test-1/audio/sfx_ding.wav` → 0
+- Issues / unsupported parts + fallback used:
+  - No 03-storyboard.md exists for this production, so the cue times (2.5 s, 6.0 s) come from the task brief, not a storyboard.
+  - Volumes were chosen within the 0.4-0.8 rule (boom 0.7, ding 0.6); the brief did not specify them.
+  - Spacing between cues is 3.5 s, which meets the 1.5 s minimum.
+  - Cue `src` paths are repo-relative, matching the audio-timing template. `studio.py merge-audio` has not been run (rendering owns that step).
+- Requests for other agents (owner: change):
+  - None.
+- Next suggested agent:
+  - rendering (merges audio/sfx-cues.json into audio/audio-timing.json via `studio.py merge-audio`), once voiceover and music cues are available if needed.

@@ -1,0 +1,59 @@
+{
+  "production_id": "deleg-test-2",
+  "request": "DMW CRUSHER X1: 20s Hinglish reel script + 5 viral hooks + YouTube thumbnail. No render. Price not confirmed.",
+  "routing_rows": ["Script / hooks only", "Thumbnail only"],
+  "agent_count": 4,
+  "render": false,
+  "approvals_needed": [],
+  "stages": [
+    {
+      "stage": "B Creative",
+      "parallel": true,
+      "agents": [
+        {
+          "agent": "script-writer",
+          "task": "Write a 20-second 9:16 reel script in Hinglish for the new DMW CRUSHER X1 with per-line timing; price/specs as [CONFIRM].",
+          "inputs": ["productions/deleg-test-2/00-brief.md", "brand/BRAND_RULES.md", "assets/demo/product_photo.jpg"],
+          "outputs": ["productions/deleg-test-2/01-script.md", "productions/deleg-test-2/script.txt", "productions/deleg-test-2/handoffs/script-writer.md"]
+        },
+        {
+          "agent": "viral-hook",
+          "task": "Write 5 scroll-stopping first-3-second hooks (spoken + on-screen text) and 3 short YouTube thumbnail text options; no invented price/specs.",
+          "inputs": ["productions/deleg-test-2/00-brief.md", "brand/BRAND_RULES.md"],
+          "outputs": ["productions/deleg-test-2/02-hooks.md", "productions/deleg-test-2/handoffs/viral-hook.md"]
+        }
+      ]
+    },
+    {
+      "stage": "D Production",
+      "parallel": false,
+      "depends_on": ["viral-hook"],
+      "agents": [
+        {
+          "agent": "image-generation",
+          "task": "Create a real 16:9 YouTube thumbnail PNG from the product photo + logo using the recommended thumbnail text from 02-hooks.md; no price shown.",
+          "inputs": ["productions/deleg-test-2/00-brief.md", "productions/deleg-test-2/02-hooks.md", "assets/demo/product_photo.jpg", "assets/demo/dmw_logo.png"],
+          "outputs": ["productions/deleg-test-2/images/thumbnail.png", "productions/deleg-test-2/handoffs/image-generation.md"]
+        }
+      ]
+    },
+    {
+      "stage": "F Review",
+      "parallel": false,
+      "depends_on": ["script-writer", "viral-hook", "image-generation"],
+      "agents": [
+        {
+          "agent": "branding",
+          "task": "Check script, hooks and thumbnail against BRAND_RULES (name, colours, logo use, tone, claims/[CONFIRM] price). APPROVED or list fixes per owner.",
+          "inputs": ["productions/deleg-test-2/01-script.md", "productions/deleg-test-2/02-hooks.md", "productions/deleg-test-2/images/thumbnail.png", "brand/BRAND_RULES.md"],
+          "outputs": ["productions/deleg-test-2/11-brand-check.md", "productions/deleg-test-2/handoffs/branding.md"]
+        }
+      ]
+    }
+  ],
+  "skipped": {
+    "asset-management": "only 2 known input files given by path; no selection needed",
+    "rendering/quality-control/final-export": "user said do NOT render",
+    "marketing-advertisement": "not requested"
+  }
+}
