@@ -73,8 +73,8 @@ def scene_shop(t):  # 0 → 3.6s: दुकान पर धीमा कैम�
     fr.alpha_composite(grad)
     d = ImageDraw.Draw(fr)
     a = ease((t - 0.5) / 0.6)
-    ctext(d, 1480, "असली दुकान।", F(110), WHITE, a, 4)
-    ctext(d, 1610, "असली मशीनें।", F(110), GOLD, ease((t - 1.2) / 0.6), 4)
+    ctext(d, 1480, "असली दुकान, असली मशीन", F(96), WHITE, a, 4)
+    ctext(d, 1610, "अर देसी भरोसा!", F(110), GOLD, ease((t - 1.2) / 0.6), 4)
     return fr
 
 
@@ -96,7 +96,7 @@ def scene_machine(t):  # 3.6 → 6.8s
         d.line([(VW - F(100).getlength("₹2 लाख का फ़ोन?")) / 2, 240, (VW - F(100).getlength("₹2 लाख का फ़ोन?")) / 2 + w, 240],
                fill=(230, 40, 40, 255), width=14)
     a2 = ease((t - 5.0) / 0.5)
-    ctext(d, 310, "या कमाने वाली मशीन?", F(104), GOLD, a2, 3)
+    ctext(d, 310, "या कमावण आळी मशीन?", F(104), GOLD, a2, 3)
     ctext(d, 1560, "बिटकॉइन माइनिंग मशीन", F(70), WHITE, ease((t - 5.4) / 0.5), 3)
     return fr
 
