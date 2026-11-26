@@ -3,4 +3,5 @@ output/*/_work/
 my_videos/
 analysis/frames/
 *.mp4
+!reel_iphone/endcard.mp4
 !output/sample/*.mp4
