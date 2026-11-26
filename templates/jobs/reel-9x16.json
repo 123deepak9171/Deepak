@@ -1,0 +1,19 @@
+{
+  "id": "crusher-reel",
+  "title": "Naya Crusher - Reel",
+  "instructions": "30 sec ki energetic reel banao, silence hatao, captions lagao, music aur logo ke saath",
+  "style": "energetic",
+  "aspect": "9:16",
+  "target_duration": 30,
+  "timeline": [
+    { "type": "video", "src": "assets/raw-videos/clip1.mp4" },
+    { "type": "video", "src": "assets/raw-videos/clip2.mp4", "start": 3, "end": 20 },
+    { "type": "image", "src": "assets/photos/crusher.jpg", "duration": 3, "animation": "zoom-in" }
+  ],
+  "logo": { "src": "assets/logos/logo.png", "intro": true, "outro": true, "watermark": true },
+  "product_reveal": { "enabled": true, "title": "DMW CRUSHER X1", "subtitle": "Ghana Powerful!", "image": "assets/photos/crusher.jpg", "price": "", "position": "start" },
+  "captions": { "enabled": true, "source": "auto", "language": "hi", "dialect": "haryanvi", "script": "assets/scripts/crusher.txt" },
+  "music": { "enabled": true, "src": "assets/music/track.mp3", "volume": 0.2, "duck": true },
+  "sfx": [ { "src": "assets/sfx/whoosh.wav", "at": 5.0, "volume": 0.6 } ],
+  "export": { "publish_release": false }
+}

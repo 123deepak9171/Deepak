@@ -1,0 +1,29 @@
+# dependencies / envs
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# renders + caches (heavy, regenerate anytime)
+output/
+models/
+assets/_cache/
+assets/demo/
+assets/manifest.json
+remotion/public/job/
+remotion/out/
+
+# PRIVATE MEDIA: repo public hai, isliye raw media by default git me nahi jaata.
+# (GitHub website se upload karna phir bhi kaam karta hai. Repo private karne ke baad
+#  ye lines hata sakte ho.)
+assets/raw-videos/*
+!assets/raw-videos/.gitkeep
+assets/photos/*
+!assets/photos/.gitkeep
+assets/scripts/*
+!assets/scripts/.gitkeep
+
+# secrets never in git
+.env
+*.key
+.claude/settings.local.json

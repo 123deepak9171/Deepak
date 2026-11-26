@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DMW Video Studio</title>
+<meta name="description" content="DESI MINING WALA - AI video editing dashboard">
+<style>
+:root{
+  --bg:#111111; --panel:#1b1b1b; --panel2:#242424; --line:#333; --text:#f3f3f3; --muted:#a9a9a9;
+  --gold:#F5A623; --saffron:#FF6B1A; --ok:#3ecf8e; --err:#ff5a5a; --radius:14px;
+}
+:root[data-theme="light"]{--bg:#f6f3ee;--panel:#fff;--panel2:#f1ece4;--line:#ddd3c4;--text:#1b1b1b;--muted:#6b6257}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){--bg:#f6f3ee;--panel:#fff;--panel2:#f1ece4;--line:#ddd3c4;--text:#1b1b1b;--muted:#6b6257}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Devanagari",sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:10px}
+.logo{width:38px;height:38px;border-radius:50%;border:3px solid var(--gold);display:grid;place-items:center;font-weight:800;color:var(--gold);font-size:12px}
+header h1{font-size:17px;margin:0;line-height:1.1}
+header small{color:var(--muted);font-size:12px}
+main{max-width:760px;margin:0 auto;padding:12px 16px 120px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin:12px 0}
+h2{font-size:15px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+h2 .n{background:var(--gold);color:#111;border-radius:50%;width:22px;height:22px;display:grid;place-items:center;font-size:12px;flex:none}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
+input,select,textarea{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;font-size:16px}
+textarea{min-height:110px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:999px;padding:9px 14px;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--gold);color:#111;border-color:var(--gold);font-weight:700}
+button.btn{width:100%;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:800;font-size:16px;cursor:pointer;background:var(--gold);color:#111;margin-top:10px}
+button.sec{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+button.sm{width:auto;padding:8px 12px;font-size:13px;margin:0}
+.item{display:flex;gap:8px;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:6px 0;font-size:14px}
+.item .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .k{font-size:11px;background:var(--saffron);color:#111;border-radius:6px;padding:2px 6px;font-weight:800}
+.item button{background:none;border:1px solid var(--line);color:var(--text);border-radius:8px;width:32px;height:32px;flex:none}
+.toggle{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line)}
+.toggle:last-child{border:0}
+.toggle input{width:22px;height:22px;accent-color:var(--gold)}
+.muted{color:var(--muted);font-size:13px}
+.plan ol{padding-left:20px;margin:6px 0}
+.plan li{margin:4px 0}
+.bar{display:flex;height:28px;border-radius:8px;overflow:hidden;margin:10px 0;border:1px solid var(--line)}
+.bar div{display:grid;place-items:center;font-size:10px;color:#111;font-weight:700;overflow:hidden;white-space:nowrap}
+pre{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;overflow:auto;font-size:12px;max-height:280px}
+.note{border-left:4px solid var(--gold);padding:8px 10px;background:var(--panel2);border-radius:8px;font-size:13px;margin-top:8px}
+.warn{border-left-color:var(--err)}
+a{color:var(--gold)}
+.sticky{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:6}
+.sticky button{margin:0}
+.toast{position:fixed;left:50%;bottom:90px;translate:-50% 0;background:var(--gold);color:#111;padding:10px 16px;border-radius:999px;font-weight:700;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.on{opacity:1}
+details summary{cursor:pointer;color:var(--gold);font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">DMW</div>
+  <div><h1>DESI MINING WALA<br><small>AI Video Studio · mobile dashboard</small></h1></div>
+</header>
+<main>
+  <section>
+    <h2><span class="n">0</span>Repository</h2>
+    <div class="row">
+      <div><label for="repo">GitHub repo (owner/name)</label><input id="repo" value="123deepak9171/Deepak"></div>
+      <div><label for="branch">Branch</label><input id="branch" value="master"></div>
+    </div>
+    <div class="chips" style="margin-top:10px">
+      <button class="chip" onclick="openUpload('raw-videos')">⬆ Video upload</button>
+      <button class="chip" onclick="openUpload('photos')">⬆ Photo</button>
+      <button class="chip" onclick="openUpload('logos')">⬆ Logo</button>
+      <button class="chip" onclick="openUpload('music')">⬆ Music</button>
+      <button class="chip" onclick="openUpload('scripts')">⬆ Script</button>
+      <button class="chip" onclick="loadAssets()">↻ Media list</button>
+    </div>
+    <div class="note warn" id="pubNote">Repo agar <b>public</b> hai to upload ki gayi media sabko dikhegi. Private media se pehle repo ko Private karein (README dekhein). 25 MB se badi video: GitHub Release me attach karke uska link "URL se add" me daalein.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">1</span>Media chuno (timeline)</h2>
+    <label for="assetPick">Repo media</label>
+    <div class="row">
+      <select id="assetPick"><option value="">— pehle ↻ Media list dabao —</option></select>
+      <button class="btn sec sm" style="height:46px" onclick="addPicked()">+ Add</button>
+    </div>
+    <label for="urlAdd">Ya URL / path se add karo</label>
+    <div class="row">
+      <input id="urlAdd" placeholder="assets/raw-videos/clip1.mp4 ya https://github.com/.../clip.mp4">
+      <button class="btn sec sm" style="height:46px" onclick="addUrl()">+ Add</button>
+    </div>
+    <div id="timeline"></div>
+    <button class="btn sec sm" style="margin-top:8px" onclick="addTitle()">+ Title card</button>
+    <p class="muted" id="tlEmpty">Timeline khali hai. Video ya photo add karo — order wahi rahega jo yahan dikhega.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Editing instructions</h2>
+    <label for="title">Video ka title</label>
+    <input id="title" placeholder="Naya crusher review">
+    <label for="instructions">Kya chahiye? (Hinglish me likho)</label>
+    <textarea id="instructions" placeholder="Jaise: 30 sec ki energetic reel banao, silence hatao, captions lagao, background music aur logo ke saath. Product reveal bhi chahiye."></textarea>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Style, format, duration</h2>
+    <label>Video style</label>
+    <div class="chips" id="styles"></div>
+    <label>Format</label>
+    <div class="chips" id="aspects"></div>
+    <label for="dur">Duration: <b id="durV">30</b> sec</label>
+    <input id="dur" type="range" min="10" max="600" step="5" value="30">
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Extras</h2>
+    <div class="toggle"><span>Silence / dead-air hatao</span><input type="checkbox" id="silence" checked></div>
+    <div class="toggle"><span>Animated captions (Hindi/Haryanvi)</span><input type="checkbox" id="captions" checked></div>
+    <div class="toggle"><span>Logo intro animation</span><input type="checkbox" id="intro" checked></div>
+    <div class="toggle"><span>Outro + Subscribe CTA</span><input type="checkbox" id="outro" checked></div>
+    <div class="toggle"><span>Logo watermark</span><input type="checkbox" id="wm" checked></div>
+    <div class="toggle"><span>Product reveal scene</span><input type="checkbox" id="product"></div>
+    <div id="productBox" hidden>
+      <label for="pTitle">Product name</label><input id="pTitle" placeholder="DMW CRUSHER X1">
+      <div class="row">
+        <div><label for="pSub">Tagline</label><input id="pSub" placeholder="Ghana powerful!"></div>
+        <div><label for="pPrice">Price (optional)</label><input id="pPrice" placeholder="₹ Best Price"></div>
+      </div>
+      <label for="pImg">Product photo path</label><input id="pImg" placeholder="assets/photos/product.jpg">
+    </div>
+    <label for="logo">Logo file</label><input id="logo" value="assets/logos/logo.png">
+    <label for="music">Background music (path/URL, khali = no music)</label><input id="music" placeholder="assets/music/track.mp3">
+    <label for="script">Caption script (optional: .txt/.srt — Whisper fallback)</label><input id="script" placeholder="assets/scripts/video1.txt">
+  </section>
+
+  <section class="plan" id="planBox" hidden>
+    <h2><span class="n">5</span>Editing plan preview</h2>
+    <div id="planNotes" class="muted"></div>
+    <div class="bar" id="planBar"></div>
+    <ol id="planSteps"></ol>
+    <details><summary>Job JSON dekho</summary><pre id="jsonOut"></pre></details>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Render & download</h2>
+    <p class="muted">“Render request” dabane par GitHub par job file khulegi → <b>Commit changes</b> dabao → GitHub Actions video render karega (free, cloud me) → MP4 Actions run ke <b>Artifacts</b> (ya Release) me milega.</p>
+    <div class="chips">
+      <button class="chip" onclick="openLink('actions')">▶ Render status (Actions)</button>
+      <button class="chip" onclick="openLink('releases')">⬇ Releases (MP4)</button>
+      <button class="chip" onclick="copyText(claudePrompt(),'Claude prompt copy hua')">🤖 Claude Code prompt copy</button>
+      <button class="chip" onclick="copyText(JSON.stringify(buildJob(),null,2),'JSON copy hua')">{ } JSON copy</button>
+    </div>
+    <div class="toggle" style="margin-top:8px"><span>MP4 ko Release me bhi daalo (direct download link)</span><input type="checkbox" id="release"></div>
+  </section>
+</main>
+<div class="sticky">
+  <button class="btn sec" onclick="preview()">👁 Plan preview</button>
+  <button class="btn" onclick="requestRender()">🎬 Render request</button>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const STYLES = {"desi-mining":"Desi Mining","cinematic":"Cinematic","energetic":"Energetic Reel","minimal":"Minimal","documentary":"Documentary"};
+const STYLE_CFG = {
+  "desi-mining":{grade:"earthy-mining",tr:["fadeblack","slideleft","circleopen"]},
+  "cinematic":{grade:"teal-orange",tr:["fadeblack","dissolve","smoothleft"]},
+  "energetic":{grade:"vibrant",tr:["slideleft","circleopen","wipeup","zoomin"]},
+  "minimal":{grade:"natural",tr:["fade"]},
+  "documentary":{grade:"documentary",tr:["dissolve","fade"]}};
+const ASPECTS = {"9:16":"Reel/Shorts 9:16","16:9":"YouTube 16:9","1:1":"Square 1:1","4:5":"Insta 4:5"};
+const RES = {"9:16":"1080x1920","16:9":"1920x1080","1:1":"1080x1080","4:5":"1080x1350"};
+const IMG = /\.(jpe?g|png|webp|bmp)$/i, VID = /\.(mp4|mov|mkv|webm|m4v|avi|3gp)$/i;
+let state = {style:"desi-mining", aspect:"9:16", timeline:[], assets:[]};
+const $ = id => document.getElementById(id);
+const store = {get(k){try{return JSON.parse(localStorage.getItem("dmw_"+k))}catch(e){return null}}, set(k,v){try{localStorage.setItem("dmw_"+k,JSON.stringify(v))}catch(e){}}};
+
+function chips(el, opts, key){
+  el.innerHTML = "";
+  for (const [v,l] of Object.entries(opts)){
+    const b = document.createElement("button"); b.className="chip"; b.textContent=l;
+    b.setAttribute("aria-pressed", state[key]===v); b.onclick=()=>{state[key]=v; chips(el,opts,key); save();};
+    el.appendChild(b);
+  }
+}
+function toast(m){const t=$("toast"); t.textContent=m; t.classList.add("on"); setTimeout(()=>t.classList.remove("on"),1800)}
+function repo(){return $("repo").value.trim().replace(/^https:\/\/github.com\//,"").replace(/\/$/,"")}
+function br(){return $("branch").value.trim()||"master"}
+function openUpload(folder){window.open(`https://github.com/${repo()}/upload/${br()}/assets/${folder}`,"_blank")}
+function openLink(k){window.open(`https://github.com/${repo()}/${k}`,"_blank")}
+
+async function loadAssets(){
+  const folders=["raw-videos","photos","logos","music","sfx","scripts"]; const all=[];
+  try{
+    for(const f of folders){
+      const r = await fetch(`https://api.github.com/repos/${repo()}/contents/assets/${f}?ref=${encodeURIComponent(br())}`);
+      if(r.status===404) continue;
+      if(!r.ok) throw new Error(r.status===403?"GitHub API limit / private repo":"HTTP "+r.status);
+      for(const x of await r.json()) if(x.type==="file" && !x.name.startsWith(".")) all.push(x.path);
+    }
+    state.assets=all; renderPick(); toast(`${all.length} files mile`);
+  }catch(e){toast("Media list nahi mili: "+e.message+" — path manually likho")}
+}
+function renderPick(){
+  const s=$("assetPick"); s.innerHTML='<option value="">— file chuno —</option>';
+  for(const p of state.assets){const o=document.createElement("option"); o.value=p; o.textContent=p.replace("assets/",""); s.appendChild(o)}
+}
+function addSrc(src){
+  if(!src) return toast("Path khali hai");
+  const name=src.split("?")[0];
+  if(IMG.test(name)) state.timeline.push({type:"image",src,duration:3});
+  else if(VID.test(name)) state.timeline.push({type:"video",src});
+  else if(/\.(mp3|wav|m4a|aac|ogg)$/i.test(name)){ $("music").value=src; toast("Music set hua"); save(); return; }
+  else if(/\.(txt|srt)$/i.test(name)){ $("script").value=src; toast("Script set hua"); save(); return; }
+  else return toast("Ye file type support nahi hai");
+  drawTimeline(); save();
+}
+function addPicked(){addSrc($("assetPick").value)}
+function addUrl(){addSrc($("urlAdd").value.trim()); $("urlAdd").value=""}
+function addTitle(){const t=prompt("Title card ka text?","Aaj Ka Topic"); if(t){state.timeline.push({type:"title",title:t,subtitle:"",duration:2.5}); drawTimeline(); save();}}
+function move(i,d){const t=state.timeline,j=i+d; if(j<0||j>=t.length) return; [t[i],t[j]]=[t[j],t[i]]; drawTimeline(); save()}
+function del(i){state.timeline.splice(i,1); drawTimeline(); save()}
+function drawTimeline(){
+  const el=$("timeline"); el.innerHTML="";
+  state.timeline.forEach((it,i)=>{
+    const d=document.createElement("div"); d.className="item";
+    const label = it.type==="title" ? `“${it.title}”` : it.src.split("/").pop();
+    d.innerHTML=`<span class="k">${it.type==="video"?"VID":it.type==="image"?"IMG":"TXT"}</span><span class="t"></span>`;
+    d.querySelector(".t").textContent=label;
+    if(it.type==="video"){const g=document.createElement("button"); g.title="Green screen"; g.textContent=it.greenscreen?"🟩":"▫"; g.onclick=()=>{
+      if(it.greenscreen){delete it.greenscreen}else{const bg=prompt("Green screen background (photo/video path):","assets/photos/background.jpg"); if(!bg) return; it.greenscreen={background:bg}}
+      drawTimeline(); save()}; d.appendChild(g)}
+    for(const [t,f] of [["↑",()=>move(i,-1)],["↓",()=>move(i,1)],["✕",()=>del(i)]]){const b=document.createElement("button"); b.textContent=t; b.onclick=f; d.appendChild(b)}
+    el.appendChild(d);
+  });
+  $("tlEmpty").hidden = state.timeline.length>0;
+}
+
+/* Same keyword rules as pipeline/dmw/planner.py (kept in sync manually) */
+const KW = {
+  v916:/\b(reel|reels|short|shorts|vertical|insta|instagram|9:16|story|status)\b/i,
+  v169:/\b(youtube|horizontal|landscape|16:9|long video)\b/i,
+  v11:/\b(square|1:1)\b/i,
+  cinematic:/(cinematic|filmy|movie|film look)/i, energetic:/(energetic|fast|josh|tez|dhamaka|viral)/i,
+  minimal:/(minimal|simple|saaf|clean)/i, documentary:/(documentary|news|report|explain)/i,
+  product:/(product|launch|naya maal|new machine|reveal)/i, bw:/(black ?(and|&|n) ?white|b&w|purana look)/i};
+function slug(s){return (s||"video").toLowerCase().replace(/[^a-z0-9_-]+/g,"-").replace(/^-|-$/g,"").slice(0,40)||"video"}
+
+function buildJob(){
+  const now=new Date(), stamp=now.toISOString().slice(0,16).replace(/[-:T]/g,"");
+  const job={
+    id:`${slug($("title").value)}-${stamp}`, title:$("title").value||"DMW Video",
+    instructions:$("instructions").value, style:state.style, aspect:state.aspect,
+    target_duration:+$("dur").value, remove_silence:$("silence").checked,
+    timeline:state.timeline,
+    logo:{src:$("logo").value||null,intro:$("intro").checked,outro:$("outro").checked,watermark:$("wm").checked},
+    captions:{enabled:$("captions").checked,source:"auto",language:"hi",dialect:"haryanvi"},
+    music:{enabled:!!$("music").value.trim(),src:$("music").value.trim()||null},
+    export:{publish_release:$("release").checked}
+  };
+  const sc=$("script").value.trim(); if(sc){ if(/\.srt$/i.test(sc)) job.captions.srt=sc; else job.captions.script=sc; }
+  if($("product").checked) job.product_reveal={enabled:true,title:$("pTitle").value||job.title,subtitle:$("pSub").value,price:$("pPrice").value,image:$("pImg").value||null};
+  return job;
+}
+function plan(job){
+  const t=(job.instructions||"").toLowerCase(), notes=[]; let aspect=job.aspect, style=job.style;
+  if(KW.v916.test(t)&&aspect!=="9:16") notes.push("Instruction me reel/shorts likha hai — 9:16 better rahega");
+  if(KW.v169.test(t)&&aspect!=="16:9") notes.push("Instruction me YouTube/horizontal likha hai — 16:9 better rahega");
+  for(const s of ["cinematic","energetic","minimal","documentary"]) if(KW[s].test(t)&&style!==s){notes.push(`Instruction se '${s}' style match karta hai`);break}
+  if(KW.product.test(t)&&!job.product_reveal) notes.push("Product ka zikr hai — renderer product reveal scene add karega");
+  const sc=STYLE_CFG[style], steps=[], parts=[];
+  if(job.logo.intro){steps.push("Intro: Remotion logo animation (3s)"); parts.push(["Intro",3,"#F5A623"])}
+  if(job.product_reveal){steps.push(`Product reveal: “${job.product_reveal.title}”`); parts.push(["Product",4,"#FF6B1A"])}
+  let body=Math.max(job.target_duration-(job.logo.intro?3:0)-(job.logo.outro?3:0)-(job.product_reveal?4:0),3);
+  const n=job.timeline.length||1;
+  job.timeline.forEach((it,i)=>{
+    if(it.type==="video") steps.push(`Clip ${i+1}: ${it.src.split("/").pop()} → ${[job.remove_silence&&"silence cut",it.greenscreen&&"green screen",sc.grade!=="natural"&&"zoom/punch-in"].filter(Boolean).join(", ")||"as-is"}`);
+    else if(it.type==="image") steps.push(`Photo ${i+1}: ${it.src.split("/").pop()} → Ken Burns ${it.duration}s`);
+    else steps.push(`Title card: “${it.title}”`);
+    parts.push([it.type==="video"?"Clip":it.type==="image"?"Photo":"Title", body/n, it.type==="video"?"#7fb3ff":it.type==="image"?"#9be7a8":"#d7b3ff"]);
+  });
+  if(job.logo.outro){steps.push("Outro: logo + Subscribe CTA"); parts.push(["Outro",3,"#F5A623"])}
+  steps.push(`Transitions: ${sc.tr.join(", ")}`);
+  steps.push(`Color grade: ${KW.bw.test(t)?"bw":sc.grade}`);
+  if(job.captions.enabled) steps.push("Animated captions: Whisper (Hindi/Haryanvi) → script fallback");
+  if(job.music.enabled) steps.push(`Background music + auto ducking: ${job.music.src.split("/").pop()}`);
+  steps.push("Whoosh SFX on transitions, loudness -14 LUFS");
+  if(job.logo.watermark) steps.push("Logo watermark (top-right)");
+  steps.push(`Export: ${RES[aspect]} 30fps H.264/AAC MP4, ~${job.target_duration}s`);
+  if(!job.timeline.length) notes.unshift("⚠ Timeline khali hai — kam se kam ek video/photo add karo");
+  return {notes,steps,parts};
+}
+function preview(){
+  const job=buildJob(), p=plan(job);
+  $("planBox").hidden=false;
+  $("planNotes").innerHTML=p.notes.map(n=>`• ${n}`).join("<br>")||"Sab set hai ✔";
+  $("planSteps").innerHTML=""; p.steps.forEach(s=>{const li=document.createElement("li"); li.textContent=s; $("planSteps").appendChild(li)});
+  const tot=p.parts.reduce((a,b)=>a+b[1],0)||1;
+  $("planBar").innerHTML=p.parts.map(([l,d,c])=>`<div style="flex:${d/tot};background:${c}">${l}</div>`).join("");
+  $("jsonOut").textContent=JSON.stringify(job,null,2);
+  $("planBox").scrollIntoView({behavior:"smooth"});
+  return job;
+}
+function requestRender(){
+  const job=preview();
+  if(!job.timeline.length) return toast("Pehle media add karo");
+  const url=`https://github.com/${repo()}/new/${br()}?filename=${encodeURIComponent("jobs/"+job.id+".json")}&value=${encodeURIComponent(JSON.stringify(job,null,2))}`;
+  window.open(url,"_blank");
+  toast("GitHub khula — 'Commit changes' dabao");
+}
+function claudePrompt(){
+  return `DMW studio me ye job render karo. Job JSON jobs/ folder me save karo, "python pipeline/studio.py plan" se plan dikhao, phir render karo aur MP4 mujhe bhejo:\n\n${JSON.stringify(buildJob(),null,2)}`;
+}
+async function copyText(t,msg){try{await navigator.clipboard.writeText(t);toast(msg)}catch(e){$("planBox").hidden=false;$("jsonOut").textContent=t;toast("Copy blocked — text neeche dikh raha hai")}}
+
+const FIELDS=["repo","branch","title","instructions","dur","silence","captions","intro","outro","wm","product","pTitle","pSub","pPrice","pImg","logo","music","script","release"];
+function save(){const v={}; for(const f of FIELDS){const e=$(f); v[f]=e.type==="checkbox"?e.checked:e.value} store.set("form",v); store.set("state",{style:state.style,aspect:state.aspect,timeline:state.timeline})}
+function restore(){
+  const v=store.get("form"); if(v) for(const f of FIELDS){const e=$(f); if(e&&v[f]!==undefined){if(e.type==="checkbox") e.checked=v[f]; else e.value=v[f]}}
+  const s=store.get("state"); if(s) Object.assign(state,s);
+}
+restore();
+chips($("styles"),STYLES,"style"); chips($("aspects"),ASPECTS,"aspect"); drawTimeline();
+$("durV").textContent=$("dur").value; $("productBox").hidden=!$("product").checked;
+$("dur").oninput=()=>{$("durV").textContent=$("dur").value; save()};
+$("product").onchange=()=>{$("productBox").hidden=!$("product").checked; save()};
+document.querySelectorAll("input,textarea").forEach(e=>e.addEventListener("change",save));
+</script>
+</body>
+</html>

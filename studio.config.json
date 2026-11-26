@@ -1,0 +1,166 @@
+{
+  "studio_name": "DESI MINING WALA Video Studio",
+  "brand": {
+    "name": "DESI MINING WALA",
+    "tagline": "Asli Desi Mining Knowledge",
+    "gold": "#F5A623",
+    "saffron": "#FF6B1A",
+    "dark": "#111111",
+    "default_logo": "assets/logos/logo.png",
+    "outro_cta": "Subscribe karo, Bell dabao!"
+  },
+  "paths": {
+    "assets": "assets",
+    "jobs": "jobs",
+    "output": "output",
+    "fonts": "assets/fonts",
+    "remotion": "remotion"
+  },
+  "defaults": {
+    "aspect": "9:16",
+    "fps": 30,
+    "style": "desi-mining",
+    "target_duration": 30,
+    "fit_mode": "blur",
+    "crf": 20,
+    "x264_preset": "medium",
+    "audio_bitrate": "192k"
+  },
+  "resolutions": {
+    "16:9": [
+      1920,
+      1080
+    ],
+    "9:16": [
+      1080,
+      1920
+    ],
+    "1:1": [
+      1080,
+      1080
+    ],
+    "4:5": [
+      1080,
+      1350
+    ]
+  },
+  "silence": {
+    "noise_db": -35,
+    "min_silence": 0.5,
+    "padding": 0.12,
+    "min_keep": 0.3
+  },
+  "styles": {
+    "desi-mining": {
+      "label": "Desi Mining (signature)",
+      "grade": "earthy-mining",
+      "transitions": [
+        "fadeblack",
+        "slideleft",
+        "circleopen"
+      ],
+      "transition_duration": 0.5,
+      "zoom": 1.07,
+      "punch_in": true,
+      "music_volume": 0.2
+    },
+    "cinematic": {
+      "label": "Cinematic",
+      "grade": "teal-orange",
+      "transitions": [
+        "fadeblack",
+        "dissolve",
+        "smoothleft"
+      ],
+      "transition_duration": 0.8,
+      "zoom": 1.08,
+      "punch_in": false,
+      "music_volume": 0.18
+    },
+    "energetic": {
+      "label": "Energetic Reel",
+      "grade": "vibrant",
+      "transitions": [
+        "slideleft",
+        "circleopen",
+        "wipeup",
+        "zoomin"
+      ],
+      "transition_duration": 0.35,
+      "zoom": 1.06,
+      "punch_in": true,
+      "music_volume": 0.24
+    },
+    "minimal": {
+      "label": "Minimal / Clean",
+      "grade": "natural",
+      "transitions": [
+        "fade"
+      ],
+      "transition_duration": 0.4,
+      "zoom": 0,
+      "punch_in": false,
+      "music_volume": 0.15
+    },
+    "documentary": {
+      "label": "Documentary / News",
+      "grade": "documentary",
+      "transitions": [
+        "dissolve",
+        "fade"
+      ],
+      "transition_duration": 0.6,
+      "zoom": 1.04,
+      "punch_in": false,
+      "music_volume": 0.12
+    }
+  },
+  "captions": {
+    "font": "Mukta ExtraBold",
+    "color": "#FFFFFF",
+    "highlight": "#F5A623",
+    "outline": "#000000",
+    "max_words_vertical": 3,
+    "max_words_horizontal": 5,
+    "position": "lower"
+  },
+  "audio": {
+    "loudness_lufs": -14,
+    "true_peak": -1.5,
+    "voice_gain": 1.0,
+    "duck_music": true,
+    "auto_whoosh": true,
+    "default_whoosh": "assets/sfx/whoosh.wav"
+  },
+  "transcription": {
+    "engine": "faster-whisper",
+    "model": "small",
+    "language": "hi",
+    "compute_type": "int8",
+    "beam_size": 5,
+    "local_model_dir": "models/whisper",
+    "haryanvi_prompt": "Yo video Haryanvi aur Hindi mein sai. Ram Ram bhai, ke haal sai, thaara, mhara, ghana, kade, kit, bhai, mining, crusher, JCB, dumper, khadaan, pathar, reta, bajri."
+  },
+  "remotion": {
+    "browser_executable": "auto",
+    "timeout_sec": 900,
+    "concurrency": 2
+  },
+  "limits": {
+    "max_target_duration": 900,
+    "max_timeline_items": 60,
+    "max_input_mb": 4096,
+    "min_free_disk_gb": 2,
+    "command_timeout_sec": 3600
+  },
+  "remote_media": {
+    "allowed_hosts": [
+      "github.com",
+      "objects.githubusercontent.com",
+      "release-assets.githubusercontent.com",
+      "raw.githubusercontent.com",
+      "media.githubusercontent.com"
+    ],
+    "note": "Bade videos GitHub Release assets me upload karke unka https link job me 'src' ki jagah do."
+  }
+}

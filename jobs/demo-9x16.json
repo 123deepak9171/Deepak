@@ -1,0 +1,55 @@
+{
+  "id": "demo-9x16",
+  "title": "DMW Demo",
+  "instructions": "Ek energetic reel banao, silence hatao, captions lagao, music aur logo ke saath. 20 sec.",
+  "aspect": "9:16",
+  "style": "energetic",
+  "target_duration": 22,
+  "logo": {
+    "src": "assets/demo/dmw_logo.png",
+    "intro": true,
+    "outro": true,
+    "watermark": true,
+    "intro_duration": 2.5,
+    "outro_duration": 2.5
+  },
+  "product_reveal": {
+    "enabled": true,
+    "title": "DMW CRUSHER X1",
+    "subtitle": "Ghana Powerful!",
+    "image": "assets/demo/product_photo.jpg",
+    "price": "₹ Best Price",
+    "duration": 3,
+    "position": "start"
+  },
+  "timeline": [
+    {
+      "type": "video",
+      "src": "assets/demo/talking_head.mp4"
+    },
+    {
+      "type": "video",
+      "src": "assets/demo/greenscreen.mp4",
+      "remove_silence": false,
+      "greenscreen": {
+        "background": "assets/demo/mine_background.jpg"
+      }
+    },
+    {
+      "type": "image",
+      "src": "assets/demo/product_photo.jpg",
+      "duration": 2.5,
+      "animation": "zoom-in"
+    }
+  ],
+  "captions": {
+    "enabled": true,
+    "source": "script",
+    "script": "assets/demo/script.txt",
+    "language": "hi"
+  },
+  "music": {
+    "enabled": true,
+    "src": "assets/demo/demo_music.mp3"
+  }
+}

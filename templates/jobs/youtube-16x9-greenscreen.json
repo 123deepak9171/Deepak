@@ -1,0 +1,20 @@
+{
+  "id": "site-visit-youtube",
+  "title": "Khadaan Site Visit",
+  "instructions": "YouTube ke liye cinematic video, 2 minute, captions ke saath",
+  "style": "cinematic",
+  "aspect": "16:9",
+  "target_duration": 120,
+  "fit_mode": "blur",
+  "timeline": [
+    { "type": "title", "title": "Khadaan Site Visit", "subtitle": "Episode 1", "duration": 2.5 },
+    { "type": "video", "src": "assets/raw-videos/anchor_green.mp4",
+      "greenscreen": { "background": "assets/photos/mine_site.jpg", "color": "0x00FF00", "similarity": 0.18, "blend": 0.08 } },
+    { "type": "video", "src": "https://github.com/123deepak9171/Deepak/releases/download/media-01/site_walk.mp4" }
+  ],
+  "grade": "earthy-mining",
+  "lut": null,
+  "captions": { "enabled": true, "source": "auto", "language": "hi", "dialect": "haryanvi" },
+  "music": { "enabled": true, "src": "assets/music/calm.mp3", "volume": 0.12 },
+  "export": { "crf": 19, "preset": "slow", "publish_release": false }
+}

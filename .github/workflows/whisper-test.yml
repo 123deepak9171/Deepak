@@ -1,0 +1,46 @@
+# Faster-Whisper self-test: Hindi speech (espeak-ng se bani) ko transcribe karta hai.
+# Claude cloud session me huggingface.co blocked hai, isliye ye test GitHub runner par hota hai.
+name: Whisper Self-Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: "Whisper model (tiny / base / small / medium)"
+        default: "small"
+  push:
+    paths:
+      - ".github/workflows/whisper-test.yml"
+      - "pipeline/dmw/captions.py"
+
+permissions:
+  contents: read
+
+jobs:
+  whisper:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg espeak-ng
+      - run: pip install -r pipeline/requirements.txt
+      - name: Make Hindi test speech
+        run: |
+          mkdir -p output/whisper-test
+          espeak-ng -v hi -s 140 -w output/whisper-test/hindi.wav "राम राम भाई। आज हम खदान में नई मशीन देखेंगे। यह मशीन बहुत ताकतवर है।"
+          ffmpeg -hide_banner -y -i output/whisper-test/hindi.wav -ar 16000 -ac 1 output/whisper-test/hindi16k.wav
+      - name: Transcribe (Hindi)
+        env:
+          DMW_WHISPER_MODEL: ${{ github.event.inputs.model || 'small' }}
+        run: |
+          python pipeline/studio.py transcribe output/whisper-test/hindi16k.wav --language hi --dialect haryanvi --out output/whisper-test/hindi.srt
+          cat output/whisper-test/hindi.srt
+          { echo '## Whisper result'; echo '```'; cat output/whisper-test/hindi.srt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          test -s output/whisper-test/hindi.srt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: whisper-test
+          path: output/whisper-test/

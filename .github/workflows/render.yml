@@ -1,0 +1,147 @@
+# DESI MINING WALA - cloud video render (free GitHub-hosted runner)
+# Trigger 1: jobs/*.json file commit karo (dashboard ka "Render request" yahi karta hai)
+# Trigger 2: Actions tab -> "Render Video" -> Run workflow -> job path do
+name: Render Video
+
+on:
+  push:
+    paths:
+      - "jobs/*.json"
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Job file (jaise jobs/demo-9x16.json)"
+        required: true
+        default: "jobs/demo-9x16.json"
+      publish_release:
+        description: "MP4 ko GitHub Release me bhi daalo (direct download link)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Find job files
+        id: jobs
+        env:
+          INPUT_JOB: ${{ github.event.inputs.job }}
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ -n "$INPUT_JOB" ]; then
+            files="$INPUT_JOB"
+          elif [ -n "$BEFORE" ] && ! echo "$BEFORE" | grep -qE '^0+$' && git cat-file -e "$BEFORE" 2>/dev/null; then
+            files=$(git diff --name-only --diff-filter=AM "$BEFORE" "$GITHUB_SHA" -- 'jobs/*.json')
+          else
+            files=$(git diff-tree --no-commit-id --name-only -r --diff-filter=AM "$GITHUB_SHA" -- 'jobs/*.json')
+          fi
+          files=$(echo "$files" | grep -E '^jobs/[A-Za-z0-9._-]+\.json$' || true)
+          echo "Jobs: $files"
+          { echo "files<<EOF"; echo "$files"; echo "EOF"; } >> "$GITHUB_OUTPUT"
+
+      - uses: actions/setup-node@v4
+        if: steps.jobs.outputs.files != ''
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: remotion/package-lock.json
+
+      - uses: actions/setup-python@v5
+        if: steps.jobs.outputs.files != ''
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+
+      - name: Install FFmpeg + fonts
+        if: steps.jobs.outputs.files != ''
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-core
+
+      - name: Install Remotion + Faster-Whisper
+        if: steps.jobs.outputs.files != ''
+        run: |
+          (cd remotion && npm ci --no-audit --no-fund)
+          pip install -r pipeline/requirements.txt
+
+      - name: Cache Whisper models
+        if: steps.jobs.outputs.files != ''
+        uses: actions/cache@v4
+        with:
+          path: models/whisper
+          key: whisper-models-v1
+
+      - name: Render
+        if: steps.jobs.outputs.files != ''
+        env:
+          FILES: ${{ steps.jobs.outputs.files }}
+        run: |
+          python pipeline/studio.py doctor || true
+          status=0
+          for f in $FILES; do
+            if grep -q '"assets/demo/' "$f"; then python pipeline/studio.py demo --assets-only; fi
+            echo "::group::Render $f"
+            python pipeline/studio.py render "$f" || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+
+      - name: Upload MP4 (Artifacts)
+        if: always() && steps.jobs.outputs.files != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-videos-${{ github.run_number }}
+          path: |
+            output/*/*.mp4
+            output/*/thumbnail.jpg
+            output/*/report.json
+            output/*/plan.json
+            output/*/render.log
+          retention-days: 14
+          compression-level: 0
+
+      - name: Publish Release (optional direct download)
+        if: success() && steps.jobs.outputs.files != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FILES: ${{ steps.jobs.outputs.files }}
+          FORCE: ${{ github.event.inputs.publish_release }}
+        run: |
+          for f in $FILES; do
+            id=$(python -c "import json,sys,re;d=json.load(open(sys.argv[1]));print(re.sub(r'[^a-zA-Z0-9_-]+','-',d.get('id') or sys.argv[1].split('/')[-1][:-5]).strip('-').lower()[:60])" "$f")
+            pub=$(python -c "import json,sys;print(str(json.load(open(sys.argv[1])).get('export',{}).get('publish_release',False)).lower())" "$f")
+            if [ "$FORCE" = "true" ] || [ "$pub" = "true" ]; then
+              tag="render-${id}-${GITHUB_RUN_NUMBER}"
+              gh release create "$tag" "output/$id/$id.mp4" "output/$id/thumbnail.jpg" \
+                --target "$GITHUB_SHA" --prerelease --title "Video: $id" \
+                --notes "DESI MINING WALA render. Job: $f. QA report: Actions run ${GITHUB_RUN_ID}."
+              echo "Release: https://github.com/${GITHUB_REPOSITORY}/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+      - name: Summary
+        if: always() && steps.jobs.outputs.files != ''
+        run: |
+          echo "## 🎬 DESI MINING WALA render" >> "$GITHUB_STEP_SUMMARY"
+          for r in output/*/report.json; do
+            [ -f "$r" ] || continue
+            python - "$r" >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json, sys
+          r = json.load(open(sys.argv[1])); i = r["info"]
+          print(f"- **{r['file']}** — {'✅ PASS' if r['passed'] else '❌ FAIL'} — {i['width']}x{i['height']}, {i['vcodec']}/{i['acodec']}, {i['duration']:.1f}s, {i['size_bytes']/1e6:.1f} MB")
+          PY
+          done
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "⬇ MP4 download: is page ke neeche **Artifacts** section me 'rendered-videos' par tap karo (zip). Direct MP4 ke liye 'publish_release' ON karo." >> "$GITHUB_STEP_SUMMARY"
