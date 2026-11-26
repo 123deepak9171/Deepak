@@ -27,3 +27,15 @@ assets/scripts/*
 .env
 *.key
 .claude/settings.local.json
+
+# Agent productions: private by default (scripts/briefs may be confidential).
+# Only the README and synthetic test productions (_tests, deleg-test-*) are tracked, without heavy media.
+productions/*
+!productions/README.md
+!productions/_tests/
+!productions/deleg-test-1/
+!productions/deleg-test-2/
+productions/**/*.mp4
+productions/**/*.wav
+productions/**/*.mp3
+productions/**/*.mkv

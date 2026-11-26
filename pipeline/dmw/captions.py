@@ -168,8 +168,18 @@ def build_captions(merged: Path, job: dict, cfg: dict, work: Path, speech_window
         text = cap.get("text") or safe_path(cap["script"], "text").read_text(encoding="utf-8")
         sc = cfg["silence"]
         a, b = speech_window
-        sil = ff.detect_silence(merged, sc["noise_db"], 0.35, log)
-        speech = ff.speech_intervals(a, b, sil, 0.0, 0.25) or [(a, b)]
+        if job.get("voiceover"):  # narration comes from VO tracks -> time captions to them
+            speech = []
+            for vo in job["voiceover"]:
+                p = safe_path(vo["src"], "audio")
+                at = float(vo.get("at", 0))
+                vsil = ff.detect_silence(p, sc["noise_db"], 0.35, log)
+                speech += [(at + s0, at + e0) for s0, e0 in
+                           ff.speech_intervals(0, ff.media_info(p)["duration"], vsil, 0.0, 0.25)]
+        else:
+            sil = ff.detect_silence(merged, sc["noise_db"], 0.35, log)
+            speech = ff.speech_intervals(a, b, sil, 0.0, 0.25)
+        speech = speech or [(a, b)]
         words = words_from_script(text, speech)
         log.say(f"  [Caption] Script se {len(words)} words ko {len(speech)} speech parts me time kiya")
     if not words:

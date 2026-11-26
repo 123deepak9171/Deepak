@@ -1,0 +1,35 @@
+[Planner] Job 'tooltest-vo': 1080x1920 style=desi-mining target=14s
+   - Intro: Remotion logo animation (2.5s)
+   - Clip 1: productions/_tests/tooltest/face_reframed.mp4 -> silence cut, jump-cut punch-in zoom, slow camera push-in
+   - Photo 2: assets/demo/product_photo.jpg -> Ken Burns animation 3s
+   - Transitions: fadeblack, slideleft, circleopen (0.5s)
+   - Color grade: earthy-mining
+   - Animated captions: source=script lang=hi
+   - Background music: productions/_tests/tooltest/bed_desi.mp3 vol=0.25 duck=True
+   - Voiceover: 1 track(s) mix + music ducking
+   - Sound effects: transitions par whoosh + custom SFX
+   - Logo watermark (top-right)
+   - Export: 1080x1920 30fps H.264 + AAC, loudness -14 LUFS, max ~14s
+  [Motion] Remotion LogoReveal render (2.5s)...
+  [Editor] segment 1 (video): 1 part(s), 6.0s rakha (original 6.0s)
+  [Editor] segment 2 (photo): Ken Burns in/left 3.0s
+  [Editor] 3 segments merge (transitions: fadeblack, slideleft, circleopen, 0.50s)
+  [Caption] Script se 10 words ko 2 speech parts me time kiya
+  [Caption] 10 animated caption events banaye
+  [Sound] voice cleanup, music=ON, sfx=5, loudness -14 LUFS
+  [QA] PASS: 1080x1920 h264/aac 10.50s 4.65MB
+[Done] output/tooltest-vo/tooltest-vo.mp4 (60.9s me render hua)
+{
+  "file": "output/tooltest-vo/tooltest-vo.mp4",
+  "passed": true,
+  "checks": {
+    "video_codec_h264": true,
+    "pixel_format_yuv420p": true,
+    "resolution_ok": true,
+    "fps_ok": true,
+    "audio_aac": true,
+    "duration_ok": true,
+    "decodes_without_errors": true
+  }
+}
+EXIT 0

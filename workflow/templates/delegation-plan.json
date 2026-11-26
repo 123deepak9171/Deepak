@@ -1,0 +1,16 @@
+{
+  "production_id": "<id>",
+  "request_type": "quick-edit | product-launch | captions-only | ...",
+  "reason": "why these agents",
+  "stages": [
+    {"stage": "B", "parallel": [
+      {"agent": "script-writer", "task": "...", "inputs": ["00-brief.md"], "outputs": ["01-script.md", "script.txt"]},
+      {"agent": "asset-management", "task": "...", "inputs": ["assets/"], "outputs": ["asset-selection.json"]}
+    ]},
+    {"stage": "E", "parallel": [
+      {"agent": "video-editor", "task": "...", "inputs": ["asset-selection.json"], "outputs": ["edit-timeline.json"]}
+    ]}
+  ],
+  "skipped_agents": {"ai-video-generation": "not needed: all shots exist"},
+  "approvals_needed": []
+}

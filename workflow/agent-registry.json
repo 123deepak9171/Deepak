@@ -1,0 +1,825 @@
+{
+  "version": 1,
+  "count": 30,
+  "agents": [
+    {
+      "n": 1,
+      "name": "master-director",
+      "title": "Master Director",
+      "team": "director",
+      "model": "inherit",
+      "file": ".claude/agents/master-director.md",
+      "tools": [
+        "Agent(script-writer, viral-hook, storyboard, ai-prompt-engineer, character-consistency, image-generation, ai-video-generation, product-showcase, cinematic-camera, background-reference, visual-effects, video-editor, motion-graphics, transition, color-grading, face-object-tracking, remotion-animation, voiceover, lip-sync, background-music, sound-effects, speech-transcription, animated-subtitle, asset-management, branding, marketing-advertisement, quality-control, rendering, final-export)",
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash",
+        "TodoWrite",
+        "Skill"
+      ],
+      "owns": [
+        "00-brief.md",
+        "delegation-plan.json",
+        "handoffs/master-director.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py plan productions/<id>/edit-timeline.json",
+        "python pipeline/studio.py doctor"
+      ],
+      "description": "Orchestrator of the DESI MINING WALA video studio. Use FIRST for any video production request (reel, short, YouTube video, ad, product launch). Reads the brief, picks the MINIMUM set of specialist agents, runs independent ones in parallel, merges results and drives the render."
+    },
+    {
+      "n": 2,
+      "name": "script-writer",
+      "title": "Script Writer",
+      "team": "creative",
+      "model": "sonnet",
+      "file": ".claude/agents/script-writer.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit"
+      ],
+      "owns": [
+        "01-script.md",
+        "script.txt",
+        "handoffs/script-writer.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [],
+      "description": "Writes Hinglish/Haryanvi video scripts and voiceover lines for DESI MINING WALA (reels, shorts, YouTube, ads) with timing per line. Use when a video needs a script or VO text."
+    },
+    {
+      "n": 3,
+      "name": "viral-hook",
+      "title": "Viral Hook",
+      "team": "creative",
+      "model": "sonnet",
+      "file": ".claude/agents/viral-hook.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "WebSearch",
+        "WebFetch"
+      ],
+      "owns": [
+        "02-hooks.md",
+        "handoffs/viral-hook.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [],
+      "description": "Creates scroll-stopping first-3-second hooks, on-screen hook text and title ideas for DESI MINING WALA reels/shorts. Use when the video needs a stronger opening or A/B hook options."
+    },
+    {
+      "n": 4,
+      "name": "storyboard",
+      "title": "Storyboard",
+      "team": "creative",
+      "model": "sonnet",
+      "file": ".claude/agents/storyboard.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "03-storyboard.md",
+        "storyboard.jpg",
+        "handoffs/storyboard.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py storyboard productions/<id>/edit-timeline.json --out productions/<id>"
+      ],
+      "description": "Builds a scene-by-scene storyboard (markdown + real contact-sheet image) from the script and selected media. Use after script/asset selection and before editing."
+    },
+    {
+      "n": 5,
+      "name": "ai-prompt-engineer",
+      "title": "AI Prompt Engineer",
+      "team": "creative",
+      "model": "sonnet",
+      "file": ".claude/agents/ai-prompt-engineer.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit"
+      ],
+      "owns": [
+        "04-prompts.md",
+        "handoffs/ai-prompt-engineer.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "No AI image/video/voice model is installed; prompts must be run in an external tool by the user (may cost credits)."
+      ],
+      "commands": [],
+      "description": "Writes precise prompts for external AI image/video/voice tools (only if the user approves them) and internal agent task prompts. Use when AI generation prompts or reusable prompt templates are needed."
+    },
+    {
+      "n": 6,
+      "name": "character-consistency",
+      "title": "Character Consistency",
+      "team": "creative",
+      "model": "sonnet",
+      "file": ".claude/agents/character-consistency.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "05-character-bible.md",
+        "refs/character_sheet.jpg",
+        "handoffs/character-consistency.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "No identity-locking for AI generation (no local AI model). Consistency is enforced by references + review."
+      ],
+      "commands": [
+        "ffmpeg -i <video> -vf \"fps=1/2,scale=320:-2,tile=4x2\" -frames:v 1 productions/<id>/refs/character_sheet.jpg"
+      ],
+      "description": "Keeps presenters, mascots and products visually consistent across scenes: character/product bible, reference sheet, wardrobe and continuity checks. Use for multi-scene or series content."
+    },
+    {
+      "n": 7,
+      "name": "image-generation",
+      "title": "Image Generation",
+      "team": "visual",
+      "model": "sonnet",
+      "file": ".claude/agents/image-generation.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "images/",
+        "handoffs/image-generation.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "Text-to-image AI generation (no local model, external services need approval/credits)."
+      ],
+      "commands": [
+        "python pipeline/studio.py still Thumbnail --props '<json>' --out productions/<id>/images/thumbnail.png",
+        "ffmpeg -ss <t> -i <video> -frames:v 1 productions/<id>/images/frame.jpg"
+      ],
+      "description": "Creates real branded images: YouTube thumbnails, posters, title cards and frame grabs using Remotion stills and FFmpeg. Use when the video needs a thumbnail or still graphics."
+    },
+    {
+      "n": 8,
+      "name": "ai-video-generation",
+      "title": "AI Video Generation",
+      "team": "visual",
+      "model": "sonnet",
+      "file": ".claude/agents/ai-video-generation.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "06-ai-video-requests.md",
+        "generated/",
+        "handoffs/ai-video-generation.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "Text-to-video / image-to-video AI models are not installed (external services need approval/credits)."
+      ],
+      "commands": [
+        "ffmpeg -loop 1 -i <photo> -vf \"scale=1620:2880,zoompan=z='min(1+0.0015*on,1.15)':d=1:s=1080x1920:fps=30\" -t 4 -pix_fmt yuv420p productions/<id>/generated/shot.mp4"
+      ],
+      "description": "Turns stills into motion clips (Ken Burns, parallax-style zoom/pan) with FFmpeg and prepares approved requests for external AI video tools. Use when a shot is missing and must be created."
+    },
+    {
+      "n": 9,
+      "name": "product-showcase",
+      "title": "Product Showcase",
+      "team": "visual",
+      "model": "sonnet",
+      "file": ".claude/agents/product-showcase.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "07-product-showcase.md",
+        "fragments/product.json",
+        "handoffs/product-showcase.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py still ProductReveal --props '<json>' --out productions/<id>/images/product_preview.png"
+      ],
+      "description": "Plans and configures product reveal scenes (machines, crushers, parts): hero shots, feature callouts, price badge and the Remotion ProductReveal settings. Use for launches, reviews and ads."
+    },
+    {
+      "n": 10,
+      "name": "cinematic-camera",
+      "title": "Cinematic Camera",
+      "team": "visual",
+      "model": "sonnet",
+      "file": ".claude/agents/cinematic-camera.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "08-shot-list.md",
+        "fragments/camera.json",
+        "handoffs/cinematic-camera.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [],
+      "description": "Designs virtual camera work: shot list, zoom/push-in, punch-ins, pans, subject-following vertical reframes. Use when footage needs cinematic movement or 16:9 -> 9:16 reframing."
+    },
+    {
+      "n": 11,
+      "name": "background-reference",
+      "title": "Background and Reference",
+      "team": "visual",
+      "model": "sonnet",
+      "file": ".claude/agents/background-reference.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "09-backgrounds.md",
+        "backgrounds/",
+        "refs/moodboard.jpg",
+        "handoffs/background-reference.md"
+      ],
+      "capability": "real",
+      "unsupported": [
+        "AI background generation/removal without green screen (no matting model installed)."
+      ],
+      "commands": [
+        "ffmpeg -i <photo> -vf \"scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920\" productions/<id>/backgrounds/bg.jpg",
+        "ffmpeg -f lavfi -i \"gradients=s=1080x1920:c0=0x3B2A1A:c1=0xC08040:d=1\" -frames:v 1 productions/<id>/backgrounds/gradient.jpg"
+      ],
+      "description": "Prepares backgrounds and references: green-screen plates, blurred/gradient backdrops, mood/reference boards. Use for green-screen shots, missing backgrounds or look references."
+    },
+    {
+      "n": 12,
+      "name": "visual-effects",
+      "title": "Visual Effects",
+      "team": "visual",
+      "model": "sonnet",
+      "file": ".claude/agents/visual-effects.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "10-vfx-plan.md",
+        "vfx/",
+        "handoffs/visual-effects.md"
+      ],
+      "capability": "real",
+      "unsupported": [
+        "AI rotoscoping/object removal (no model installed)."
+      ],
+      "commands": [
+        "ffmpeg -i in.mp4 -vf \"tpad=stop_mode=clone:stop_duration=1\" productions/<id>/vfx/freeze.mp4",
+        "ffmpeg -i in.mp4 -vf \"setpts=0.5*PTS\" -af atempo=2 productions/<id>/vfx/fast.mp4"
+      ],
+      "description": "Adds practical VFX with FFmpeg/Remotion: chroma key, glow, blur, shake, speed ramp, freeze frame, light leak, highlight circles. Use when a shot needs an effect beyond normal editing."
+    },
+    {
+      "n": 13,
+      "name": "video-editor",
+      "title": "Professional Video Editing",
+      "team": "editing",
+      "model": "sonnet",
+      "file": ".claude/agents/video-editor.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "edit-timeline.json",
+        "handoffs/video-editor.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py plan productions/<id>/edit-timeline.json",
+        "python pipeline/studio.py probe <clip>"
+      ],
+      "description": "Owns the edit timeline (render job JSON): ordering, trims, silence cuts, pacing, target duration. Merges fragments from camera, motion, transition, color and audio agents. Use for any actual edit."
+    },
+    {
+      "n": 14,
+      "name": "motion-graphics",
+      "title": "Motion Graphics",
+      "team": "editing",
+      "model": "sonnet",
+      "file": ".claude/agents/motion-graphics.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "fragments/motion.json",
+        "handoffs/motion-graphics.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py still TitleCard --props '<json>' --out productions/<id>/images/title_preview.png"
+      ],
+      "description": "Plans and configures on-screen graphics: logo intro/outro, title cards, lower thirds, product callouts, CTA. Uses existing Remotion compositions via timeline settings. Use for text/graphic overlays."
+    },
+    {
+      "n": 15,
+      "name": "transition",
+      "title": "Transition",
+      "team": "editing",
+      "model": "haiku",
+      "file": ".claude/agents/transition.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit"
+      ],
+      "owns": [
+        "fragments/transitions.json",
+        "handoffs/transition.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [],
+      "description": "Chooses transitions per cut (xfade type + duration) matching style and pacing, and places whoosh cues. Use when transitions need tuning or the style is changed."
+    },
+    {
+      "n": 16,
+      "name": "color-grading",
+      "title": "Color Grading",
+      "team": "editing",
+      "model": "sonnet",
+      "file": ".claude/agents/color-grading.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "fragments/grade.json",
+        "grades.jpg",
+        "handoffs/color-grading.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py grade-preview <clip> --grades natural,earthy-mining,teal-orange,vibrant --out productions/<id>/grades.jpg"
+      ],
+      "description": "Chooses and verifies the color grade (presets or .cube LUT) with real side-by-side previews. Use when footage looks flat, mismatched or needs a brand look."
+    },
+    {
+      "n": 17,
+      "name": "face-object-tracking",
+      "title": "Face and Object Tracking",
+      "team": "editing",
+      "model": "sonnet",
+      "file": ".claude/agents/face-object-tracking.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "tracking/",
+        "handoffs/face-object-tracking.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "Deep-learning trackers / person segmentation (only Haar faces + motion centroid available)."
+      ],
+      "commands": [
+        "python pipeline/studio.py track <clip> --out productions/<id>/tracking/clip.json --reframe 9:16 --reframe-out productions/<id>/tracking/clip_9x16.mp4"
+      ],
+      "description": "Tracks faces (OpenCV Haar) or moving objects (motion) and creates subject-following 9:16 reframes. Use when converting landscape footage to vertical with a moving subject."
+    },
+    {
+      "n": 18,
+      "name": "remotion-animation",
+      "title": "Remotion Animation",
+      "team": "editing",
+      "model": "sonnet",
+      "file": ".claude/agents/remotion-animation.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash",
+        "Skill"
+      ],
+      "owns": [
+        "remotion/src/**",
+        "handoffs/remotion-animation.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "cd remotion && npx tsc -p .",
+        "python pipeline/studio.py still <Composition> --props '<json>' --out productions/<id>/images/<comp>.png"
+      ],
+      "description": "The ONLY agent that edits remotion/src: builds new or improved Remotion compositions (animated titles, lower thirds, charts, maps) following Remotion best practices. Use for new animation code."
+    },
+    {
+      "n": 19,
+      "name": "voiceover",
+      "title": "Voiceover",
+      "team": "audio",
+      "model": "sonnet",
+      "file": ".claude/agents/voiceover.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "audio/vo_*.wav",
+        "audio/vo-cues.json",
+        "handoffs/voiceover.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "Natural human-quality AI TTS and voice cloning (only robotic espeak-ng offline; external TTS needs approval)."
+      ],
+      "commands": [
+        "python pipeline/studio.py voiceover --text-file productions/<id>/script.txt --out productions/<id>/audio/vo_1.wav --lang hi"
+      ],
+      "description": "Prepares voiceover tracks: cleans user-recorded VO or creates an offline espeak-ng guide voice for timing, and writes VO cues. Use when the video needs narration."
+    },
+    {
+      "n": 20,
+      "name": "lip-sync",
+      "title": "Lip Sync",
+      "team": "audio",
+      "model": "sonnet",
+      "file": ".claude/agents/lip-sync.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "sync/",
+        "handoffs/lip-sync.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "Generative lip-sync (Wav2Lip etc. not installed; models are large and some are non-commercial)."
+      ],
+      "commands": [
+        "python pipeline/studio.py shift-audio <clip> --ms 120 --out productions/<id>/sync/clip_synced.mp4"
+      ],
+      "description": "Checks and fixes audio/video sync offsets (e.g. external mic audio, Bluetooth delay) by shifting audio. Use when speech looks out of sync with lips."
+    },
+    {
+      "n": 21,
+      "name": "background-music",
+      "title": "Background Music",
+      "team": "audio",
+      "model": "haiku",
+      "file": ".claude/agents/background-music.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "audio/music.json",
+        "audio/bed_*.mp3",
+        "handoffs/background-music.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "AI music generation (only simple synthetic beds; real tracks must be licensed by the user)."
+      ],
+      "commands": [
+        "python pipeline/studio.py music-bed --mood desi --duration 30 --out productions/<id>/audio/bed_desi.mp3"
+      ],
+      "description": "Selects, trims and levels background music from assets/music (or creates a synthetic placeholder bed) with ducking settings. Use when the video needs music."
+    },
+    {
+      "n": 22,
+      "name": "sound-effects",
+      "title": "Sound Effects",
+      "team": "audio",
+      "model": "haiku",
+      "file": ".claude/agents/sound-effects.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "audio/sfx_*.wav",
+        "audio/sfx-cues.json",
+        "handoffs/sound-effects.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py sfx boom --out productions/<id>/audio/sfx_boom.wav"
+      ],
+      "description": "Creates and places sound effects (whoosh, boom, riser, ding, click, swipe, cash) at exact times. Use for transitions, reveals, text pops and emphasis."
+    },
+    {
+      "n": 23,
+      "name": "speech-transcription",
+      "title": "Speech Transcription",
+      "team": "audio",
+      "model": "sonnet",
+      "file": ".claude/agents/speech-transcription.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "transcript.srt",
+        "handoffs/speech-transcription.md"
+      ],
+      "capability": "partial",
+      "unsupported": [
+        "Whisper model download is blocked inside this cloud session; works in GitHub Actions or with a local model in models/whisper."
+      ],
+      "commands": [
+        "python pipeline/studio.py transcribe <media> --language hi --dialect haryanvi --out productions/<id>/transcript.srt"
+      ],
+      "description": "Transcribes Hindi/Haryanvi speech to SRT with Faster-Whisper (word timestamps). Use when captions or a transcript are needed from real speech."
+    },
+    {
+      "n": 24,
+      "name": "animated-subtitle",
+      "title": "Animated Subtitle",
+      "team": "audio",
+      "model": "haiku",
+      "file": ".claude/agents/animated-subtitle.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "fragments/captions.json",
+        "handoffs/animated-subtitle.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [],
+      "description": "Configures animated word-highlight captions (source, language, style, Devanagari/Hinglish) for the timeline. Use whenever captions are on."
+    },
+    {
+      "n": 25,
+      "name": "asset-management",
+      "title": "Asset Management",
+      "team": "brand",
+      "model": "haiku",
+      "file": ".claude/agents/asset-management.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "asset-selection.json",
+        "handoffs/asset-management.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py assets",
+        "python pipeline/studio.py probe <file>"
+      ],
+      "description": "Scans and catalogues media in assets/ (metadata, duplicates, missing files) and selects assets for a production. Use at the start of every production."
+    },
+    {
+      "n": 26,
+      "name": "branding",
+      "title": "Desi Mining Wala Branding",
+      "team": "brand",
+      "model": "sonnet",
+      "file": ".claude/agents/branding.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "11-brand-check.md",
+        "handoffs/branding.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "ffmpeg -ss 5 -i output/<id>/<id>.mp4 -frames:v 1 productions/<id>/qc/brand_frame.jpg"
+      ],
+      "description": "Brand guardian: checks scripts, graphics, colours, logo use, claims and tone against BRAND_RULES and approves or requests fixes. Use before render and before publishing."
+    },
+    {
+      "n": 27,
+      "name": "marketing-advertisement",
+      "title": "Marketing and Advertisement",
+      "team": "brand",
+      "model": "sonnet",
+      "file": ".claude/agents/marketing-advertisement.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "WebSearch",
+        "WebFetch"
+      ],
+      "owns": [
+        "12-marketing.md",
+        "handoffs/marketing-advertisement.md"
+      ],
+      "capability": "real",
+      "unsupported": [
+        "Auto-posting to social media or running paid ads (needs accounts + explicit approval)."
+      ],
+      "commands": [],
+      "description": "Writes platform copy: YouTube title/description/tags, Instagram caption + hashtags, WhatsApp message, ad variants and posting plan. Use after the edit is final or for ad campaigns."
+    },
+    {
+      "n": 28,
+      "name": "quality-control",
+      "title": "Quality Control",
+      "team": "final",
+      "model": "sonnet",
+      "file": ".claude/agents/quality-control.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "qc/",
+        "handoffs/quality-control.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py qc output/<id>/<id>.mp4 --out-dir productions/<id>/qc",
+        "node pipeline/tools/verify_playback.cjs output/<id>/<id>.mp4"
+      ],
+      "description": "Runs real QC on rendered MP4s: codec, resolution, duration, loudness, black/freeze frames, silence, faststart, contact sheet + visual check. Use after every render."
+    },
+    {
+      "n": 29,
+      "name": "rendering",
+      "title": "Rendering",
+      "team": "final",
+      "model": "sonnet",
+      "file": ".claude/agents/rendering.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "audio/audio-timing.json",
+        "output/<id>/",
+        "handoffs/rendering.md"
+      ],
+      "capability": "real",
+      "unsupported": [],
+      "commands": [
+        "python pipeline/studio.py merge-audio productions/<id>",
+        "python pipeline/studio.py render productions/<id>/edit-timeline.json"
+      ],
+      "description": "Runs the safe render of edit-timeline.json (FFmpeg + Remotion), merges audio fragments, handles render errors and reports timings. Use when the timeline is ready."
+    },
+    {
+      "n": 30,
+      "name": "final-export",
+      "title": "Final Export",
+      "team": "final",
+      "model": "haiku",
+      "file": ".claude/agents/final-export.md",
+      "tools": [
+        "Read",
+        "Glob",
+        "Grep",
+        "Write",
+        "Edit",
+        "Bash"
+      ],
+      "owns": [
+        "exports/",
+        "handoffs/final-export.md"
+      ],
+      "capability": "real",
+      "unsupported": [
+        "Uploading to YouTube/Instagram (needs account access + approval)."
+      ],
+      "commands": [
+        "python pipeline/studio.py export output/<id>/<id>.mp4 --presets master,reels,whatsapp --out-dir productions/<id>/exports"
+      ],
+      "description": "Creates platform deliverables (master, reels, shorts, youtube, whatsapp, square) with checksums and a download plan for mobile. Use after QC passes."
+    }
+  ]
+}

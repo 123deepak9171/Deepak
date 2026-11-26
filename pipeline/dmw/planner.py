@@ -185,6 +185,9 @@ def normalize_job(raw: dict) -> dict:
         safe_path(music["src"], "audio")
     for s in job["sfx"]:
         safe_path(s["src"], "audio")
+    job.setdefault("voiceover", [])
+    for v in job["voiceover"]:
+        safe_path(v["src"], "audio")
     if cap.get("script"):
         safe_path(cap["script"], "text")
     if job.get("lut"):
@@ -225,6 +228,8 @@ def build_plan(job: dict) -> dict:
         steps.append(f"Animated captions: source={job['captions']['source']} lang={job['captions']['language']}")
     if job["music"].get("enabled"):
         steps.append(f"Background music: {job['music'].get('src')} vol={job['music']['volume']} duck={job['music']['duck']}")
+    if job.get("voiceover"):
+        steps.append(f"Voiceover: {len(job['voiceover'])} track(s) mix + music ducking")
     if job["sfx"] or job["auto_whoosh"]:
         steps.append("Sound effects: transitions par whoosh + custom SFX")
     if job["logo"]["watermark"]:

@@ -1,0 +1,41 @@
+{
+  "source": "output/demo-9x16/demo-9x16.mp4",
+  "exports": [
+    {
+      "preset": "master",
+      "file": "productions/_tests/tooltest/exports/demo-9x16_master.mp4",
+      "width": 1080,
+      "height": 1920,
+      "duration": 20.766,
+      "size_mb": 7.84,
+      "sha256": "059fe4aa72f531efeb0a43351d60b73591cb5b528e18718a51480048803f2624"
+    },
+    {
+      "preset": "reels",
+      "file": "productions/_tests/tooltest/exports/demo-9x16_reels.mp4",
+      "width": 1080,
+      "height": 1920,
+      "duration": 20.78,
+      "size_mb": 7.08,
+      "sha256": "1ceee367705da4f74453c93d49c58e463fc7b30b3d89ff60064637a910bb1ddd"
+    },
+    {
+      "preset": "whatsapp",
+      "file": "productions/_tests/tooltest/exports/demo-9x16_whatsapp.mp4",
+      "width": 720,
+      "height": 1280,
+      "duration": 20.78,
+      "size_mb": 6.48,
+      "sha256": "1a57a921d55e39b31a2cdb0114f6f29547bf4f52770b62243869b12af37bef95"
+    },
+    {
+      "preset": "youtube",
+      "file": "productions/_tests/tooltest/exports/demo-9x16_youtube.mp4",
+      "width": 1920,
+      "height": 1080,
+      "duration": 20.78,
+      "size_mb": 6.8,
+      "sha256": "85222f97ae600be17832d432e69524a4cc92fb402c977922759f4c5c47543d81"
+    }
+  ]
+}

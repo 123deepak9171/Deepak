@@ -254,3 +254,54 @@ Demo video: [`samples/demo-9x16.mp4`](samples/demo-9x16.mp4) (synthetic test pat
 2. **GitHub Pages ON karna** — dashboard ka link paane ke liye (Settings → Pages → `/docs`).
 3. **Remotion license** — company me 4+ log ho to Company License.
 4. (Optional) Claude environment me `huggingface.co` allow — taaki Whisper Claude session ke andar bhi chale.
+
+
+---
+
+## 16. 🤖 Multi-agent team (30 Claude Code subagents)
+
+Studio me ab **30 specialist AI agents** hain (official Claude Code format: `.claude/agents/<name>.md`, YAML frontmatter + system prompt).
+
+**Kaise use karein**
+- Claude Code me bas bolo: *"Master director, naye crusher ki 30 sec reel banao…"* — main session `master-director` ko kaam deta hai.
+- Ya CLI me: `claude --agent master-director` (poora session director ban jaata hai).
+- Director `workflow/ROUTING.md` se **kam se kam agents** chunta hai (quick edit = 5 agents, thumbnail = 3), independent agents **parallel** chalata hai, aur har agent sirf apni files likhta hai (`workflow/PROTOCOL.md`).
+
+**Shared files**: `workflow/PROTOCOL.md` (communication + file ownership), `workflow/ROUTING.md` (kaunsa kaam → kaunse agents), `workflow/TOOLS.md` (real commands), `workflow/templates/` (brief, video plan, delegation plan, asset selection, audio timing, edit timeline, QC checklist, handoff), `brand/BRAND_RULES.md` (har agent ke liye brand rules), `workflow/agent-registry.json` (sab agents ka data).
+
+**Agent badalna**: `workflow/tools/build_agents.py` edit karo → `python workflow/tools/build_agents.py` → `python workflow/tools/validate_agents.py`.
+
+| # | Agent | Team | File | Status | Kya nahi kar sakta |
+|---|---|---|---|---|---|
+| 1 | **Master Director** (`master-director`) | Director | `.claude/agents/master-director.md` | ✅ REAL | — |
+| 2 | **Script Writer** (`script-writer`) | Creative | `.claude/agents/script-writer.md` | ✅ REAL | — |
+| 3 | **Viral Hook** (`viral-hook`) | Creative | `.claude/agents/viral-hook.md` | ✅ REAL | — |
+| 4 | **Storyboard** (`storyboard`) | Creative | `.claude/agents/storyboard.md` | ✅ REAL | — |
+| 5 | **AI Prompt Engineer** (`ai-prompt-engineer`) | Creative | `.claude/agents/ai-prompt-engineer.md` | 🟡 PARTIAL | No AI image/video/voice model is installed; prompts must be run in an external tool by the user (may cost credits). |
+| 6 | **Character Consistency** (`character-consistency`) | Creative | `.claude/agents/character-consistency.md` | 🟡 PARTIAL | No identity-locking for AI generation (no local AI model). Consistency is enforced by references + review. |
+| 7 | **Image Generation** (`image-generation`) | Visual | `.claude/agents/image-generation.md` | 🟡 PARTIAL | Text-to-image AI generation (no local model, external services need approval/credits). |
+| 8 | **AI Video Generation** (`ai-video-generation`) | Visual | `.claude/agents/ai-video-generation.md` | 🟡 PARTIAL | Text-to-video / image-to-video AI models are not installed (external services need approval/credits). |
+| 9 | **Product Showcase** (`product-showcase`) | Visual | `.claude/agents/product-showcase.md` | ✅ REAL | — |
+| 10 | **Cinematic Camera** (`cinematic-camera`) | Visual | `.claude/agents/cinematic-camera.md` | ✅ REAL | — |
+| 11 | **Background and Reference** (`background-reference`) | Visual | `.claude/agents/background-reference.md` | ✅ REAL | AI background generation/removal without green screen (no matting model installed). |
+| 12 | **Visual Effects** (`visual-effects`) | Visual | `.claude/agents/visual-effects.md` | ✅ REAL | AI rotoscoping/object removal (no model installed). |
+| 13 | **Professional Video Editing** (`video-editor`) | Editing | `.claude/agents/video-editor.md` | ✅ REAL | — |
+| 14 | **Motion Graphics** (`motion-graphics`) | Editing | `.claude/agents/motion-graphics.md` | ✅ REAL | — |
+| 15 | **Transition** (`transition`) | Editing | `.claude/agents/transition.md` | ✅ REAL | — |
+| 16 | **Color Grading** (`color-grading`) | Editing | `.claude/agents/color-grading.md` | ✅ REAL | — |
+| 17 | **Face and Object Tracking** (`face-object-tracking`) | Editing | `.claude/agents/face-object-tracking.md` | 🟡 PARTIAL | Deep-learning trackers / person segmentation (only Haar faces + motion centroid available). |
+| 18 | **Remotion Animation** (`remotion-animation`) | Editing | `.claude/agents/remotion-animation.md` | ✅ REAL | — |
+| 19 | **Voiceover** (`voiceover`) | Audio | `.claude/agents/voiceover.md` | 🟡 PARTIAL | Natural human-quality AI TTS and voice cloning (only robotic espeak-ng offline; external TTS needs approval). |
+| 20 | **Lip Sync** (`lip-sync`) | Audio | `.claude/agents/lip-sync.md` | 🟡 PARTIAL | Generative lip-sync (Wav2Lip etc. not installed; models are large and some are non-commercial). |
+| 21 | **Background Music** (`background-music`) | Audio | `.claude/agents/background-music.md` | 🟡 PARTIAL | AI music generation (only simple synthetic beds; real tracks must be licensed by the user). |
+| 22 | **Sound Effects** (`sound-effects`) | Audio | `.claude/agents/sound-effects.md` | ✅ REAL | — |
+| 23 | **Speech Transcription** (`speech-transcription`) | Audio | `.claude/agents/speech-transcription.md` | 🟡 PARTIAL | Whisper model download is blocked inside this cloud session; works in GitHub Actions or with a local model in models/whisper. |
+| 24 | **Animated Subtitle** (`animated-subtitle`) | Audio | `.claude/agents/animated-subtitle.md` | ✅ REAL | — |
+| 25 | **Asset Management** (`asset-management`) | Brand | `.claude/agents/asset-management.md` | ✅ REAL | — |
+| 26 | **Desi Mining Wala Branding** (`branding`) | Brand | `.claude/agents/branding.md` | ✅ REAL | — |
+| 27 | **Marketing and Advertisement** (`marketing-advertisement`) | Brand | `.claude/agents/marketing-advertisement.md` | ✅ REAL | Auto-posting to social media or running paid ads (needs accounts + explicit approval). |
+| 28 | **Quality Control** (`quality-control`) | Final Production | `.claude/agents/quality-control.md` | ✅ REAL | — |
+| 29 | **Rendering** (`rendering`) | Final Production | `.claude/agents/rendering.md` | ✅ REAL | — |
+| 30 | **Final Export** (`final-export`) | Final Production | `.claude/agents/final-export.md` | ✅ REAL | Uploading to YouTube/Instagram (needs account access + approval). |
+
+✅ REAL = installed free tools se asli output banata hai. 🟡 PARTIAL = asli fallback output deta hai, lekin AI-generation wala hissa yahan available nahi (external service + aapki approval chahiye).

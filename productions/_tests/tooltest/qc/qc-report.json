@@ -1,0 +1,35 @@
+{
+  "file": "output/demo-9x16/demo-9x16.mp4",
+  "info": {
+    "path": "/home/user/Deepak/output/demo-9x16/demo-9x16.mp4",
+    "duration": 20.766,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30.0,
+    "vcodec": "h264",
+    "pix_fmt": "yuv420p",
+    "profile": "High",
+    "acodec": "aac",
+    "sample_rate": 48000,
+    "channels": 2,
+    "has_video": true,
+    "has_audio": true,
+    "size_bytes": 7842625,
+    "bit_rate": 3021332,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2"
+  },
+  "loudness_lufs": -13.7,
+  "true_peak_dbfs": null,
+  "black": [],
+  "freeze_starts": [],
+  "silence_starts": [],
+  "checks": {
+    "h264": true,
+    "aac": true,
+    "yuv420p": true,
+    "faststart": true
+  },
+  "warnings": [],
+  "status": "PASS",
+  "contact_sheet": "productions/_tests/tooltest/qc/contact_sheet.jpg"
+}

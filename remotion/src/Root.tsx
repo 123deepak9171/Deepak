@@ -4,6 +4,7 @@ import { LogoReveal, LogoRevealProps } from "./compositions/LogoReveal";
 import { ProductReveal, ProductRevealProps } from "./compositions/ProductReveal";
 import { TitleCard, TitleCardProps } from "./compositions/TitleCard";
 import { Outro, OutroProps } from "./compositions/Outro";
+import { Thumbnail, ThumbnailProps } from "./compositions/Thumbnail";
 
 // Every composition reads its size + length from input props, so the Python
 // pipeline can render 16:9, 9:16 or 1:1 with any duration.
@@ -59,6 +60,16 @@ export const RemotionRoot: React.FC = () => (
       durationInFrames={90}
       defaultProps={{ ...base, durationSec: 3, logo: null, cta: "Subscribe karo, Bell dabao!" } satisfies OutroProps}
       calculateMetadata={meta<OutroProps>()}
+    />
+    <Composition
+      id="Thumbnail"
+      component={Thumbnail}
+      width={1280}
+      height={720}
+      fps={30}
+      durationInFrames={1}
+      defaultProps={{ width: 1280, height: 720, fps: 30, durationSec: 1 / 30, headline: "NAYA CRUSHER!", subline: "Ghana Powerful", image: null, logo: null, badge: "NEW" } satisfies ThumbnailProps}
+      calculateMetadata={meta<ThumbnailProps>()}
     />
   </>
 );

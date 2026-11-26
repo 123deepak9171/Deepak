@@ -1,0 +1,8 @@
+{
+  "production_id": "<id>",
+  "clips": [{"src": "assets/raw-videos/clip1.mp4", "use": "hook", "start": 0, "end": 6, "duration": 12.4, "resolution": "1920x1080", "has_audio": true, "reason": "sharp, good audio"}],
+  "photos": [{"src": "assets/photos/crusher.jpg", "use": "product hero"}],
+  "logo": "assets/logos/logo.png",
+  "music": [{"src": "assets/music/track.mp3", "licence": "royalty-free, source: ..."}],
+  "missing": ["close-up of crusher jaw"]
+}

@@ -1,0 +1,22 @@
+{
+  "id": "<id>",
+  "title": "<title>",
+  "style": "desi-mining",
+  "aspect": "9:16",
+  "target_duration": 30,
+  "fit_mode": "blur",
+  "remove_silence": true,
+  "timeline": [
+    {"type": "video", "src": "assets/raw-videos/clip1.mp4", "start": 0, "end": 6},
+    {"type": "image", "src": "assets/photos/crusher.jpg", "duration": 3, "animation": "zoom-in"},
+    {"type": "title", "title": "Price Kitna?", "duration": 2.5}
+  ],
+  "logo": {"src": "assets/logos/logo.png", "intro": true, "outro": true, "watermark": true},
+  "product_reveal": {"enabled": false},
+  "captions": {"enabled": true, "source": "script", "script": "productions/<id>/script.txt", "language": "hi"},
+  "music": {"enabled": false},
+  "audio_timing": "productions/<id>/audio/audio-timing.json",
+  "transitions": {"types": ["fadeblack", "slideleft"], "duration": 0.5},
+  "grade": "earthy-mining",
+  "export": {"crf": 20, "preset": "medium", "publish_release": false}
+}

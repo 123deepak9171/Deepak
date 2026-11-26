@@ -1,0 +1,14 @@
+# Brief: <title>
+- Production id: <id>
+- Requested by / date:
+- Goal (1 line):
+- Platform + aspect: reels 9:16 | youtube 16:9 | square 1:1
+- Target duration (s):
+- Style: desi-mining | cinematic | energetic | minimal | documentary
+- Audience:
+- Media provided (repo paths / links):
+- Must-have shots / messages:
+- Facts given by user (price, specs, offer):
+- Facts to CONFIRM:
+- Needs approval (external AI, paid, publishing):
+- Selected agents + reason (from ROUTING.md):

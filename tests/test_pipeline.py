@@ -51,5 +51,30 @@ class CaptionTests(unittest.TestCase):
         self.assertTrue(all(len(c) <= 3 for c in captions.chunk_words(w, 3)))
 
 
+class AgentConfigTests(unittest.TestCase):
+    def test_thirty_valid_agents(self):
+        import subprocess
+        root = Path(__file__).resolve().parents[1]
+        r = subprocess.run([sys.executable, str(root / "workflow" / "tools" / "validate_agents.py")],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("Agents: 30", r.stdout)
+
+
+class ToolTests(unittest.TestCase):
+    def test_merge_audio(self):
+        import json
+        import tempfile
+        from dmw import tools
+        from dmw.config import ROOT
+        with tempfile.TemporaryDirectory(dir=ROOT / "productions") as d:
+            a = Path(d) / "audio"
+            a.mkdir()
+            (a / "sfx-cues.json").write_text(json.dumps([{"src": "assets/sfx/whoosh.wav", "at": 1}]))
+            res = tools.merge_audio(Path(d))
+            self.assertEqual(res["sfx"], 1)
+            self.assertTrue((a / "audio-timing.json").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -5,6 +5,10 @@ description: DESI MINING WALA video studio. Use when the user gives raw videos/p
 
 # DMW Video Editor (multi-agent workflow)
 
+> v2: the studio now has 30 real subagents in `.claude/agents/`. For multi-step productions delegate to
+> the `master-director` subagent (routing: `workflow/ROUTING.md`, protocol: `workflow/PROTOCOL.md`).
+> The role list below is the minimal single-session fallback.
+
 You are the **Director**. Work through these agent roles in order. Each role maps to code in `pipeline/dmw/`.
 
 1. **Planner** (`planner.py`): Read the user's Hinglish instructions. Write a job JSON in `jobs/<id>.json`

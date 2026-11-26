@@ -1,0 +1,14 @@
+{
+  "id": "tooltest-vo",
+  "title": "VO test",
+  "aspect": "9:16",
+  "style": "desi-mining",
+  "target_duration": 14,
+  "timeline": [
+    {"type": "video", "src": "productions/_tests/tooltest/face_reframed.mp4", "remove_silence": false},
+    {"type": "image", "src": "assets/demo/product_photo.jpg", "duration": 3}
+  ],
+  "logo": {"src": "assets/demo/dmw_logo.png", "intro": true, "outro": false, "intro_duration": 2.5},
+  "captions": {"enabled": true, "source": "script", "text": "राम राम भाई देसी माइनिंग वाला में आपका स्वागत है"},
+  "audio_timing": "productions/_tests/tooltest/audio-timing.json"
+}

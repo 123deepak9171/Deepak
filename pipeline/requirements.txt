@@ -1,3 +1,5 @@
 faster-whisper==1.2.1
 # PyAV 16+ removed 'metadata_errors' which faster-whisper 1.2.1 uses
 av>=11,<16
+# Face/object tracking (Apache-2.0). 4.x ships Haar cascades.
+opencv-python-headless>=4.9,<5

@@ -1,0 +1,7 @@
+{
+  "owner": "background-music + sound-effects + voiceover agents",
+  "voiceover": [{"src": "productions/_tests/tooltest/vo_hi.wav", "at": 3.0, "volume": 1.0}],
+  "sfx": [{"src": "productions/_tests/tooltest/sfx_boom.wav", "at": 2.6, "volume": 0.7},
+          {"src": "productions/_tests/tooltest/sfx_ding.wav", "at": 8.0, "volume": 0.5}],
+  "music": {"src": "productions/_tests/tooltest/bed_desi.mp3", "enabled": true, "volume": 0.25, "duck": true}
+}

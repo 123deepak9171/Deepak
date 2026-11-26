@@ -8,6 +8,8 @@
   python pipeline/studio.py demo [--aspect 9:16]   # generate demo assets + render
   python pipeline/studio.py transcribe <file>      # Hindi/Haryanvi -> SRT (needs Whisper model)
   python pipeline/studio.py manifest               # list assets for the dashboard
+  Agent tools: assets | storyboard | sfx | music-bed | voiceover | track | shift-audio |
+               qc | export | grade-preview | still | merge-audio   (see workflow/TOOLS.md)
 """
 from __future__ import annotations
 
@@ -98,6 +100,78 @@ def cmd_manifest(_):
     print(json.dumps(man, indent=2))
 
 
+def _p(x):
+    return Path(x) if Path(x).is_absolute() else ROOT / x
+
+
+def _show(d):
+    print(json.dumps(d, indent=2, ensure_ascii=False))
+
+
+def cmd_storyboard(a):
+    from dmw import tools
+    _show(tools.storyboard(Path(a.job), _p(a.out) if a.out else None))
+
+
+def cmd_sfx(a):
+    from dmw import tools
+    _show(tools.sfx(a.kind, _p(a.out) if a.out else None))
+
+
+def cmd_music_bed(a):
+    from dmw import tools
+    _show(tools.music_bed(a.mood, a.duration, _p(a.out) if a.out else None))
+
+
+def cmd_voiceover(a):
+    from dmw import tools
+    text = Path(a.text_file).read_text(encoding="utf-8") if a.text_file else a.text
+    _show(tools.voiceover(text, _p(a.out), a.lang, a.speed))
+
+
+def cmd_track(a):
+    from dmw import tools
+    _show(tools.track(_p(a.video), _p(a.out), a.mode, a.sample_fps, a.reframe, _p(a.reframe_out) if a.reframe_out else None))
+
+
+def cmd_shift_audio(a):
+    from dmw import tools
+    _show(tools.shift_audio(_p(a.video), a.ms, _p(a.out)))
+
+
+def cmd_qc(a):
+    from dmw import tools
+    rep = tools.qc_deep(_p(a.mp4), _p(a.out_dir))
+    _show({k: rep[k] for k in ("file", "status", "loudness_lufs", "warnings", "checks", "contact_sheet")})
+    return 0 if rep["status"] != "FAIL" else 2
+
+
+def cmd_export(a):
+    from dmw import tools
+    _show(tools.export(_p(a.mp4), a.presets.split(","), _p(a.out_dir)))
+
+
+def cmd_grade_preview(a):
+    from dmw import tools
+    _show(tools.grade_preview(_p(a.video), a.grades.split(","), _p(a.out), a.t))
+
+
+def cmd_still(a):
+    from dmw import tools
+    props = json.loads(Path(a.props).read_text(encoding="utf-8")) if a.props.endswith(".json") else json.loads(a.props)
+    _show(tools.still(a.comp, props, _p(a.out)))
+
+
+def cmd_merge_audio(a):
+    from dmw import tools
+    _show(tools.merge_audio(_p(a.prod_dir)))
+
+
+def cmd_assets(_):
+    from dmw import tools
+    _show(tools.asset_scan())
+
+
 def main():
     ap = argparse.ArgumentParser(description="DESI MINING WALA Video Studio")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -109,6 +183,26 @@ def main():
     p = sub.add_parser("transcribe"); p.add_argument("file"); p.add_argument("--language", default="hi")
     p.add_argument("--dialect", default="haryanvi"); p.add_argument("--out"); p.set_defaults(fn=cmd_transcribe)
     sub.add_parser("manifest").set_defaults(fn=cmd_manifest)
+    sub.add_parser("assets", help="asset manifest + duplicates").set_defaults(fn=cmd_assets)
+    p = sub.add_parser("storyboard"); p.add_argument("job"); p.add_argument("--out"); p.set_defaults(fn=cmd_storyboard)
+    p = sub.add_parser("sfx"); p.add_argument("kind"); p.add_argument("--out"); p.set_defaults(fn=cmd_sfx)
+    p = sub.add_parser("music-bed"); p.add_argument("--mood", default="desi"); p.add_argument("--duration", type=float, default=30)
+    p.add_argument("--out"); p.set_defaults(fn=cmd_music_bed)
+    p = sub.add_parser("voiceover"); p.add_argument("--text"); p.add_argument("--text-file"); p.add_argument("--out", required=True)
+    p.add_argument("--lang", default="hi"); p.add_argument("--speed", type=int, default=145); p.set_defaults(fn=cmd_voiceover)
+    p = sub.add_parser("track"); p.add_argument("video"); p.add_argument("--out", required=True)
+    p.add_argument("--mode", default="auto", choices=["auto", "face", "motion"]); p.add_argument("--sample-fps", type=float, default=5)
+    p.add_argument("--reframe", help="e.g. 9:16"); p.add_argument("--reframe-out"); p.set_defaults(fn=cmd_track)
+    p = sub.add_parser("shift-audio"); p.add_argument("video"); p.add_argument("--ms", type=int, required=True)
+    p.add_argument("--out", required=True); p.set_defaults(fn=cmd_shift_audio)
+    p = sub.add_parser("qc"); p.add_argument("mp4"); p.add_argument("--out-dir", required=True); p.set_defaults(fn=cmd_qc)
+    p = sub.add_parser("export"); p.add_argument("mp4"); p.add_argument("--presets", default="master,reels,whatsapp")
+    p.add_argument("--out-dir", required=True); p.set_defaults(fn=cmd_export)
+    p = sub.add_parser("grade-preview"); p.add_argument("video"); p.add_argument("--grades", default="natural,earthy-mining,teal-orange,vibrant,bw,documentary")
+    p.add_argument("--out", required=True); p.add_argument("--t", type=float); p.set_defaults(fn=cmd_grade_preview)
+    p = sub.add_parser("merge-audio"); p.add_argument("prod_dir"); p.set_defaults(fn=cmd_merge_audio)
+    p = sub.add_parser("still"); p.add_argument("comp"); p.add_argument("--props", default="{}"); p.add_argument("--out", required=True)
+    p.set_defaults(fn=cmd_still)
     a = ap.parse_args()
     try:
         sys.exit(a.fn(a) or 0)

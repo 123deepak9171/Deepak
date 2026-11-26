@@ -1,0 +1,6 @@
+{
+  "_note": "Created by `studio.py merge-audio` from audio/vo-cues.json, audio/sfx-cues.json, audio/music.json",
+  "voiceover": [{"src": "productions/<id>/audio/vo_1.wav", "at": 2.5, "volume": 1.0}],
+  "sfx": [{"src": "productions/<id>/audio/sfx_boom.wav", "at": 5.0, "volume": 0.7}],
+  "music": {"src": "assets/music/track.mp3", "enabled": true, "volume": 0.2, "duck": true}
+}

@@ -55,13 +55,20 @@ def final_mix(merged: Path, dur: float, ass: Path | None, job: dict, cfg: dict, 
 
     ac = cfg["audio"]
     fg.append(f"[0:a]highpass=f=70,acompressor=threshold=0.125:ratio=3:attack=10:release=200,volume={ac['voice_gain']}[voice0]")
+    nvo = len(job.get("voiceover", []))
+    for j, vo in enumerate(job.get("voiceover", [])):
+        args += ["-i", safe_path(vo["src"], "audio")]
+        ms = int(float(vo.get("at", 0)) * 1000)
+        fg.append(f"[{n}:a]aresample=48000,aformat=channel_layouts=stereo,volume={vo.get('volume', 1.0)},adelay={ms}:all=1[vo{j}]")
+        fg.append(f"[voice{j}][vo{j}]amix=inputs=2:normalize=0:duration=first[voice{j + 1}]")
+        n += 1
     mix = []
     music = job["music"]
     use_music = music.get("enabled") and music.get("src")
     if use_music and music.get("duck"):
-        fg.append("[voice0]asplit=2[voice][sc]")
+        fg.append(f"[voice{nvo}]asplit=2[voice][sc]")
     else:
-        fg.append("[voice0]anull[voice]")
+        fg.append(f"[voice{nvo}]anull[voice]")
     mix.append("[voice]")
     if use_music:
         args += ["-stream_loop", "-1", "-i", safe_path(music["src"], "audio")]
@@ -128,6 +135,12 @@ def render_job(job_path: Path | dict, keep_work: bool = False, verbose: bool = T
     cfg = load_config()
     raw = job_path if isinstance(job_path, dict) else json.loads(Path(job_path).read_text(encoding="utf-8"))
     raw["id"] = slug(raw.get("id") or Path(str(job_path)).stem)
+    if raw.get("audio_timing"):  # written by audio agents (workflow/templates/audio-timing.json)
+        at = json.loads(safe_path(raw["audio_timing"]).read_text(encoding="utf-8"))
+        raw["sfx"] = list(raw.get("sfx", [])) + at.get("sfx", [])
+        raw["voiceover"] = list(raw.get("voiceover", [])) + at.get("voiceover", [])
+        if at.get("music"):
+            raw["music"] = {**raw.get("music", {}), **at["music"]}
     remote.resolve_remote(raw)
     job = normalize_job(raw)
     out_dir = ROOT / cfg["paths"]["output"] / job["id"]
